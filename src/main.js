@@ -67,6 +67,7 @@ const selectableFish = [];
 const fishHitTargets = [];
 let selectedFish = null;
 let hasPointerDown = false;
+let suppressNextClick = false;
 
 const palette = {
   waterA: new THREE.Color(0x143f55),
@@ -899,6 +900,13 @@ function createFishGeometry(color, accent, size = 1, species = "reef") {
   });
   const eyeMaterial = new THREE.MeshBasicMaterial({ color: 0x071017 });
   const eyeShineMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
+  const hitboxMaterial = new THREE.MeshBasicMaterial({
+    color: 0xffffff,
+    transparent: true,
+    opacity: 0,
+    depthWrite: false,
+    colorWrite: false,
+  });
 
   const body = new THREE.Mesh(new THREE.SphereGeometry(0.62, 28, 18), bodyMaterial);
   body.scale.set(1.35, species === "angelfish" ? 0.82 : 0.62, species === "angelfish" ? 0.52 : 0.46);
@@ -968,6 +976,11 @@ function createFishGeometry(color, accent, size = 1, species = "reef") {
   const shineR = shine.clone();
   shineR.position.z = -0.348;
   group.add(shineR);
+
+  const hitbox = new THREE.Mesh(new THREE.SphereGeometry(1.12, 8, 6), hitboxMaterial);
+  hitbox.name = "fish-click-target";
+  hitbox.userData.isClickTarget = true;
+  group.add(hitbox);
 
   group.scale.setScalar(size);
   group.userData.tail = tail;
@@ -1458,11 +1471,21 @@ function onPointerUp(event) {
   if (!hasPointerDown) return;
   hasPointerDown = false;
   const dragDistance = pointerDownPosition.distanceTo(new THREE.Vector2(event.clientX, event.clientY));
-  if (dragDistance > 6) return;
+  if (dragDistance > 6) {
+    suppressNextClick = true;
+    window.setTimeout(() => {
+      suppressNextClick = false;
+    }, 0);
+    return;
+  }
   pickFishFromPointer(event);
 }
 
 function onCanvasClick(event) {
+  if (suppressNextClick) {
+    suppressNextClick = false;
+    return;
+  }
   pickFishFromPointer(event);
 }
 
