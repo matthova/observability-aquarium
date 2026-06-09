@@ -1105,6 +1105,7 @@ function createFishSchools() {
 function setFishDirectoryExpanded(isExpanded) {
   fishDirectoryToggle.setAttribute("aria-expanded", String(isExpanded));
   fishDirectoryPanel.hidden = !isExpanded;
+  if (!isExpanded) setHoveredFish(null);
   if (isExpanded && selectedFish) {
     requestAnimationFrame(() => {
       fishListButtons.get(selectedFish.id)?.scrollIntoView({ block: "nearest" });
@@ -1640,6 +1641,14 @@ function installDevDebugTools() {
         name: selectedFish.name,
         type: selectedFish.typeLabel,
         sizeMultiplier: selectedFish.sizeMultiplier,
+      };
+    },
+    getHoveredFish() {
+      if (!hoveredFish) return null;
+      return {
+        name: hoveredFish.name,
+        type: hoveredFish.typeLabel,
+        sizeMultiplier: hoveredFish.sizeMultiplier,
       };
     },
     getFishAtScreenPoint(x, y) {
