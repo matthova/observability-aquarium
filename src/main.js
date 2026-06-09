@@ -97,10 +97,6 @@ function configuredVector(value, fallback = new THREE.Vector3()) {
   );
 }
 
-function configuredAmount(value) {
-  return Math.max(0, Math.floor(Number(value) || 0));
-}
-
 function createNoiseTexture(size = 256) {
   const data = new Uint8Array(size * size * 4);
   for (let y = 0; y < size; y += 1) {
@@ -933,6 +929,8 @@ function createFishGeometry(color, accent, size = 1, species = "reef") {
 
 class SwimmingFish {
   constructor({
+    name,
+    typeId,
     color,
     accent,
     size,
@@ -945,7 +943,12 @@ class SwimmingFish {
     species,
     schoolingOffset = new THREE.Vector3(),
   }) {
+    this.name = name;
+    this.typeId = typeId;
     this.mesh = createFishGeometry(color, accent, size, species);
+    this.mesh.name = name;
+    this.mesh.userData.fishName = name;
+    this.mesh.userData.fishType = typeId;
     this.center = center;
     this.radiusX = radiusX;
     this.radiusZ = radiusZ;
@@ -987,17 +990,20 @@ function createFishSchools() {
   const fishTypes = aquariumConfig?.fish?.types ?? [];
 
   fishTypes.forEach((fishType) => {
-    const amount = configuredAmount(fishType.amount);
+    const fishEntries = Array.isArray(fishType.fish) ? fishType.fish : [];
 
-    for (let i = 0; i < amount; i += 1) {
+    fishEntries.forEach((fishEntry = {}, i) => {
       const phase = Number.isFinite(fishType.phaseStep)
         ? i * fishType.phaseStep + configuredNumber(fishType.phaseJitter, 0)
         : rand(0, Math.PI * 2);
+      const sizeMultiplier = configuredNumber(fishEntry.sizeMultiplier, 1);
       const fish = new SwimmingFish({
+        name: fishEntry.name ?? `${fishType.id ?? "fish"}_${i + 1}`,
+        typeId: fishType.id ?? "configured_fish",
         color: fishType.bodyColor ?? "#6be6ff",
         accent: fishType.accentColor ?? "#ffd15c",
         species: fishType.species ?? "reef",
-        size: configuredNumber(fishType.size, 0.5),
+        size: configuredNumber(fishType.size, 0.5) * sizeMultiplier,
         center: configuredVector(fishType.center),
         radiusX: configuredNumber(fishType.radiusX, 7),
         radiusZ: configuredNumber(fishType.radiusZ, 4),
@@ -1007,7 +1013,7 @@ function createFishSchools() {
         schoolingOffset: configuredVector(fishType.schoolingOffset),
       });
       updatables.push((time) => fish.update(time));
-    }
+    });
   });
 }
 

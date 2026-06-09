@@ -3,102 +3,606 @@
     "types": [
       {
         "id": "orange_clownfish",
-        "amount": 8,
         "species": "clown",
         "bodyColor": "#ff7d45",
         "accentColor": "#ffffff",
-        "size": [0.32, 0.68],
-        "center": { "x": [-2, 2], "y": [-0.4, 3.6], "z": [-1.8, 2.5] },
-        "radiusX": [4.3, 11.6],
-        "radiusZ": [2.6, 7.2],
-        "yAmp": [0.28, 1.35],
-        "speed": [0.13, 0.34],
-        "schoolingOffset": { "x": [-1.5, 1.5], "y": [-0.8, 0.8], "z": [-1, 1] }
+        "size": [
+          0.32,
+          0.68
+        ],
+        "center": {
+          "x": [
+            -2,
+            2
+          ],
+          "y": [
+            -0.4,
+            3.6
+          ],
+          "z": [
+            -1.8,
+            2.5
+          ]
+        },
+        "radiusX": [
+          4.3,
+          11.6
+        ],
+        "radiusZ": [
+          2.6,
+          7.2
+        ],
+        "yAmp": [
+          0.28,
+          1.35
+        ],
+        "speed": [
+          0.13,
+          0.34
+        ],
+        "schoolingOffset": {
+          "x": [
+            -1.5,
+            1.5
+          ],
+          "y": [
+            -0.8,
+            0.8
+          ],
+          "z": [
+            -1,
+            1
+          ]
+        },
+        "fish": [
+          {
+            "name": "Miso",
+            "sizeMultiplier": 1.08
+          },
+          {
+            "name": "Azul",
+            "sizeMultiplier": 0.94
+          },
+          {
+            "name": "Poppy",
+            "sizeMultiplier": 1.16
+          },
+          {
+            "name": "Nori",
+            "sizeMultiplier": 0.88
+          },
+          {
+            "name": "Pico",
+            "sizeMultiplier": 1.02
+          },
+          {
+            "name": "Sol",
+            "sizeMultiplier": 0.97
+          },
+          {
+            "name": "Luma",
+            "sizeMultiplier": 1.12
+          },
+          {
+            "name": "Kiki",
+            "sizeMultiplier": 0.9
+          }
+        ]
       },
       {
         "id": "yellow_blue_tang",
-        "amount": 9,
         "species": "tang",
         "bodyColor": "#f7ce46",
         "accentColor": "#235cff",
-        "size": [0.36, 0.72],
-        "center": { "x": [-2, 2], "y": [-0.4, 3.6], "z": [-1.8, 2.5] },
-        "radiusX": [4.3, 11.6],
-        "radiusZ": [2.6, 7.2],
-        "yAmp": [0.28, 1.35],
-        "speed": [0.13, 0.34],
-        "schoolingOffset": { "x": [-1.5, 1.5], "y": [-0.8, 0.8], "z": [-1, 1] }
+        "size": [
+          0.36,
+          0.72
+        ],
+        "center": {
+          "x": [
+            -2,
+            2
+          ],
+          "y": [
+            -0.4,
+            3.6
+          ],
+          "z": [
+            -1.8,
+            2.5
+          ]
+        },
+        "radiusX": [
+          4.3,
+          11.6
+        ],
+        "radiusZ": [
+          2.6,
+          7.2
+        ],
+        "yAmp": [
+          0.28,
+          1.35
+        ],
+        "speed": [
+          0.13,
+          0.34
+        ],
+        "schoolingOffset": {
+          "x": [
+            -1.5,
+            1.5
+          ],
+          "y": [
+            -0.8,
+            0.8
+          ],
+          "z": [
+            -1,
+            1
+          ]
+        },
+        "fish": [
+          {
+            "name": "Zuri",
+            "sizeMultiplier": 1.05
+          },
+          {
+            "name": "Boba",
+            "sizeMultiplier": 0.86
+          },
+          {
+            "name": "Saffron",
+            "sizeMultiplier": 1.18
+          },
+          {
+            "name": "Pebble",
+            "sizeMultiplier": 0.99
+          },
+          {
+            "name": "Orbit",
+            "sizeMultiplier": 1.1
+          },
+          {
+            "name": "Maru",
+            "sizeMultiplier": 0.92
+          },
+          {
+            "name": "Cosmo",
+            "sizeMultiplier": 1.15
+          },
+          {
+            "name": "Indie",
+            "sizeMultiplier": 1
+          },
+          {
+            "name": "Tiki",
+            "sizeMultiplier": 0.89
+          }
+        ]
       },
       {
         "id": "turquoise_anthias",
-        "amount": 8,
         "species": "reef",
         "bodyColor": "#6be6ff",
         "accentColor": "#ffd15c",
-        "size": [0.3, 0.62],
-        "center": { "x": [-2, 2], "y": [-0.4, 3.6], "z": [-1.8, 2.5] },
-        "radiusX": [4.3, 11.6],
-        "radiusZ": [2.6, 7.2],
-        "yAmp": [0.28, 1.35],
-        "speed": [0.13, 0.34],
-        "schoolingOffset": { "x": [-1.5, 1.5], "y": [-0.8, 0.8], "z": [-1, 1] }
+        "size": [
+          0.3,
+          0.62
+        ],
+        "center": {
+          "x": [
+            -2,
+            2
+          ],
+          "y": [
+            -0.4,
+            3.6
+          ],
+          "z": [
+            -1.8,
+            2.5
+          ]
+        },
+        "radiusX": [
+          4.3,
+          11.6
+        ],
+        "radiusZ": [
+          2.6,
+          7.2
+        ],
+        "yAmp": [
+          0.28,
+          1.35
+        ],
+        "speed": [
+          0.13,
+          0.34
+        ],
+        "schoolingOffset": {
+          "x": [
+            -1.5,
+            1.5
+          ],
+          "y": [
+            -0.8,
+            0.8
+          ],
+          "z": [
+            -1,
+            1
+          ]
+        },
+        "fish": [
+          {
+            "name": "Halo",
+            "sizeMultiplier": 1.07
+          },
+          {
+            "name": "Opal",
+            "sizeMultiplier": 0.95
+          },
+          {
+            "name": "Nova",
+            "sizeMultiplier": 1.2
+          },
+          {
+            "name": "Mango",
+            "sizeMultiplier": 0.91
+          },
+          {
+            "name": "Scout",
+            "sizeMultiplier": 1.04
+          },
+          {
+            "name": "Tango",
+            "sizeMultiplier": 1.13
+          },
+          {
+            "name": "Pixel",
+            "sizeMultiplier": 0.87
+          },
+          {
+            "name": "Sunny",
+            "sizeMultiplier": 1.01
+          }
+        ]
       },
       {
         "id": "rose_angelfish",
-        "amount": 7,
         "species": "angelfish",
         "bodyColor": "#ff5f9b",
         "accentColor": "#46256d",
-        "size": [0.38, 0.72],
-        "center": { "x": [-2, 2], "y": [-0.4, 3.6], "z": [-1.8, 2.5] },
-        "radiusX": [4.3, 11.6],
-        "radiusZ": [2.6, 7.2],
-        "yAmp": [0.28, 1.35],
-        "speed": [0.13, 0.34],
-        "schoolingOffset": { "x": [-1.5, 1.5], "y": [-0.8, 0.8], "z": [-1, 1] }
+        "size": [
+          0.38,
+          0.72
+        ],
+        "center": {
+          "x": [
+            -2,
+            2
+          ],
+          "y": [
+            -0.4,
+            3.6
+          ],
+          "z": [
+            -1.8,
+            2.5
+          ]
+        },
+        "radiusX": [
+          4.3,
+          11.6
+        ],
+        "radiusZ": [
+          2.6,
+          7.2
+        ],
+        "yAmp": [
+          0.28,
+          1.35
+        ],
+        "speed": [
+          0.13,
+          0.34
+        ],
+        "schoolingOffset": {
+          "x": [
+            -1.5,
+            1.5
+          ],
+          "y": [
+            -0.8,
+            0.8
+          ],
+          "z": [
+            -1,
+            1
+          ]
+        },
+        "fish": [
+          {
+            "name": "Maple",
+            "sizeMultiplier": 0.96
+          },
+          {
+            "name": "Echo",
+            "sizeMultiplier": 1.17
+          },
+          {
+            "name": "Bloom",
+            "sizeMultiplier": 0.93
+          },
+          {
+            "name": "Fizz",
+            "sizeMultiplier": 1.09
+          },
+          {
+            "name": "Cleo",
+            "sizeMultiplier": 0.85
+          },
+          {
+            "name": "Pearl",
+            "sizeMultiplier": 1.14
+          },
+          {
+            "name": "Dash",
+            "sizeMultiplier": 0.98
+          }
+        ]
       },
       {
         "id": "green_chromis",
-        "amount": 8,
         "species": "reef",
         "bodyColor": "#a7f060",
         "accentColor": "#206f54",
-        "size": [0.28, 0.58],
-        "center": { "x": [-2, 2], "y": [-0.4, 3.6], "z": [-1.8, 2.5] },
-        "radiusX": [4.3, 11.6],
-        "radiusZ": [2.6, 7.2],
-        "yAmp": [0.28, 1.35],
-        "speed": [0.13, 0.34],
-        "schoolingOffset": { "x": [-1.5, 1.5], "y": [-0.8, 0.8], "z": [-1, 1] }
+        "size": [
+          0.28,
+          0.58
+        ],
+        "center": {
+          "x": [
+            -2,
+            2
+          ],
+          "y": [
+            -0.4,
+            3.6
+          ],
+          "z": [
+            -1.8,
+            2.5
+          ]
+        },
+        "radiusX": [
+          4.3,
+          11.6
+        ],
+        "radiusZ": [
+          2.6,
+          7.2
+        ],
+        "yAmp": [
+          0.28,
+          1.35
+        ],
+        "speed": [
+          0.13,
+          0.34
+        ],
+        "schoolingOffset": {
+          "x": [
+            -1.5,
+            1.5
+          ],
+          "y": [
+            -0.8,
+            0.8
+          ],
+          "z": [
+            -1,
+            1
+          ]
+        },
+        "fish": [
+          {
+            "name": "Zephyr",
+            "sizeMultiplier": 1.06
+          },
+          {
+            "name": "Rio",
+            "sizeMultiplier": 0.9
+          },
+          {
+            "name": "Lyric",
+            "sizeMultiplier": 1.19
+          },
+          {
+            "name": "Atlas",
+            "sizeMultiplier": 0.94
+          },
+          {
+            "name": "Pip",
+            "sizeMultiplier": 1.03
+          },
+          {
+            "name": "Comet",
+            "sizeMultiplier": 0.88
+          },
+          {
+            "name": "Suki",
+            "sizeMultiplier": 1.11
+          },
+          {
+            "name": "Basil",
+            "sizeMultiplier": 0.97
+          }
+        ]
       },
       {
         "id": "gold_black_tang",
-        "amount": 4,
         "species": "tang",
         "bodyColor": "#ffd34e",
         "accentColor": "#111823",
-        "size": [0.34, 0.7],
-        "center": { "x": [-2, 2], "y": [-0.4, 3.6], "z": [-1.8, 2.5] },
-        "radiusX": [4.3, 11.6],
-        "radiusZ": [2.6, 7.2],
-        "yAmp": [0.28, 1.35],
-        "speed": [0.13, 0.34],
-        "schoolingOffset": { "x": [-1.5, 1.5], "y": [-0.8, 0.8], "z": [-1, 1] }
+        "size": [
+          0.34,
+          0.7
+        ],
+        "center": {
+          "x": [
+            -2,
+            2
+          ],
+          "y": [
+            -0.4,
+            3.6
+          ],
+          "z": [
+            -1.8,
+            2.5
+          ]
+        },
+        "radiusX": [
+          4.3,
+          11.6
+        ],
+        "radiusZ": [
+          2.6,
+          7.2
+        ],
+        "yAmp": [
+          0.28,
+          1.35
+        ],
+        "speed": [
+          0.13,
+          0.34
+        ],
+        "schoolingOffset": {
+          "x": [
+            -1.5,
+            1.5
+          ],
+          "y": [
+            -0.8,
+            0.8
+          ],
+          "z": [
+            -1,
+            1
+          ]
+        },
+        "fish": [
+          {
+            "name": "Nimbus",
+            "sizeMultiplier": 1.16
+          },
+          {
+            "name": "Jade",
+            "sizeMultiplier": 0.92
+          },
+          {
+            "name": "Reef",
+            "sizeMultiplier": 1.08
+          },
+          {
+            "name": "Skye",
+            "sizeMultiplier": 0.86
+          }
+        ]
       },
       {
         "id": "glass_dartfish",
-        "amount": 13,
         "species": "reef",
         "bodyColor": "#c9f7ff",
         "accentColor": "#72b0ff",
-        "size": [0.2, 0.34],
-        "center": { "x": 0, "y": 5.2, "z": -1.5 },
+        "size": [
+          0.2,
+          0.34
+        ],
+        "center": {
+          "x": 0,
+          "y": 5.2,
+          "z": -1.5
+        },
         "radiusX": 9.5,
         "radiusZ": 4.8,
         "yAmp": 0.48,
-        "speed": [0.38, 0.55],
+        "speed": [
+          0.38,
+          0.55
+        ],
         "phaseStep": 0.23,
-        "schoolingOffset": { "x": [-0.9, 0.9], "y": [-0.35, 0.35], "z": [-0.8, 0.8] }
+        "schoolingOffset": {
+          "x": [
+            -0.9,
+            0.9
+          ],
+          "y": [
+            -0.35,
+            0.35
+          ],
+          "z": [
+            -0.8,
+            0.8
+          ]
+        },
+        "fish": [
+          {
+            "name": "Tula",
+            "sizeMultiplier": 1.05
+          },
+          {
+            "name": "Wren",
+            "sizeMultiplier": 0.99
+          },
+          {
+            "name": "Capri",
+            "sizeMultiplier": 1.18
+          },
+          {
+            "name": "Coco",
+            "sizeMultiplier": 0.91
+          },
+          {
+            "name": "Drift",
+            "sizeMultiplier": 1.02
+          },
+          {
+            "name": "Remy",
+            "sizeMultiplier": 0.95
+          },
+          {
+            "name": "Kai",
+            "sizeMultiplier": 1.12
+          },
+          {
+            "name": "Mocha",
+            "sizeMultiplier": 0.89
+          },
+          {
+            "name": "Vale",
+            "sizeMultiplier": 1.07
+          },
+          {
+            "name": "Nyx",
+            "sizeMultiplier": 0.96
+          },
+          {
+            "name": "Juno",
+            "sizeMultiplier": 1.15
+          },
+          {
+            "name": "Lapis",
+            "sizeMultiplier": 0.93
+          },
+          {
+            "name": "Ember",
+            "sizeMultiplier": 1.04
+          }
+        ]
       }
     ]
   }
