@@ -929,7 +929,6 @@ function createFishGeometry(color, accent, size = 1, species = "reef") {
   tailShape.lineTo(0, 0);
   const tail = new THREE.Mesh(new THREE.ShapeGeometry(tailShape), finMaterial);
   tail.position.x = -0.78;
-  tail.rotation.y = Math.PI / 2;
   tail.scale.setScalar(species === "angelfish" ? 1.2 : 0.86);
   tail.userData.tail = true;
   group.add(tail);
@@ -939,8 +938,7 @@ function createFishGeometry(color, accent, size = 1, species = "reef") {
   dorsalShape.quadraticCurveTo(0.12, 0.6, 0.56, 0);
   dorsalShape.quadraticCurveTo(0.05, 0.18, -0.35, 0);
   const dorsal = new THREE.Mesh(new THREE.ShapeGeometry(dorsalShape), finMaterial);
-  dorsal.position.set(0.1, 0.44, 0);
-  dorsal.rotation.x = -Math.PI / 2;
+  dorsal.position.set(0.1, 0.3, 0);
   dorsal.scale.set(0.9, 0.8, 0.8);
   group.add(dorsal);
 
@@ -1051,7 +1049,7 @@ class SwimmingFish {
     const pitch = -direction.y * 0.42;
     this.mesh.position.copy(tmpVec);
     this.mesh.rotation.set(pitch, yaw, Math.sin(time * this.speed * 1.6 + this.phase) * 0.06);
-    this.mesh.userData.tail.rotation.z = Math.sin(time * 10 * this.speed + this.phase) * 0.48;
+    this.mesh.userData.tail.rotation.y = Math.sin(time * 10 * this.speed + this.phase) * 0.48;
     this.mesh.userData.leftFin.rotation.y = Math.sin(time * 7 * this.speed + this.phase) * 0.24;
     this.mesh.userData.rightFin.rotation.y = -Math.sin(time * 7 * this.speed + this.phase) * 0.24;
     this.previous.copy(tmpVec);
