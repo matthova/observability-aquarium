@@ -1047,7 +1047,7 @@ class SwimmingFish {
     if (this.previous.lengthSq() === 0) this.previous.copy(tmpVec).add(new THREE.Vector3(0.01, 0, 0));
 
     const direction = tmpVec.clone().sub(this.previous).normalize();
-    const yaw = Math.atan2(direction.x, direction.z) + Math.PI / 2;
+    const yaw = Math.atan2(direction.x, direction.z) - Math.PI / 2;
     const pitch = -direction.y * 0.42;
     this.mesh.position.copy(tmpVec);
     this.mesh.rotation.set(pitch, yaw, Math.sin(time * this.speed * 1.6 + this.phase) * 0.06);
