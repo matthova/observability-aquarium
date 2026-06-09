@@ -63,8 +63,30 @@ body {
   backdrop-filter: blur(14px) saturate(140%);
 }
 
+.fish-inspector {
+  position: absolute;
+  top: clamp(16px, 4%, 42px);
+  right: clamp(16px, 4%, 48px);
+  z-index: 2;
+  width: min(280px, calc(100% - 32px));
+  padding: 14px 16px;
+  border: 1px solid rgba(255, 214, 126, 0.48);
+  border-radius: 8px;
+  background: linear-gradient(135deg, rgba(16, 44, 48, 0.78), rgba(4, 19, 28, 0.46));
+  box-shadow:
+    0 20px 70px rgba(0, 0, 0, 0.28),
+    0 0 30px rgba(255, 199, 97, 0.08);
+  backdrop-filter: blur(16px) saturate(150%);
+  pointer-events: none;
+}
+
+.fish-inspector[hidden] {
+  display: none;
+}
+
 .eyebrow,
 .plaque h1,
+.fish-inspector h2,
 .readout {
   margin: 0;
   letter-spacing: 0;
@@ -83,6 +105,47 @@ body {
   line-height: 1;
   font-weight: 750;
   text-wrap: balance;
+}
+
+.fish-inspector h2 {
+  margin-top: 4px;
+  font-size: 1.55rem;
+  line-height: 1.08;
+  font-weight: 760;
+}
+
+.fish-inspector dl {
+  display: grid;
+  grid-template-columns: 1fr 0.72fr;
+  gap: 10px;
+  margin: 14px 0 0;
+}
+
+.fish-inspector div {
+  min-width: 0;
+}
+
+.fish-inspector dt,
+.fish-inspector dd {
+  margin: 0;
+  letter-spacing: 0;
+}
+
+.fish-inspector dt {
+  font-size: 0.65rem;
+  line-height: 1.15;
+  color: rgba(147, 232, 247, 0.86);
+  text-transform: uppercase;
+}
+
+.fish-inspector dd {
+  margin-top: 3px;
+  overflow: hidden;
+  color: rgba(246, 253, 255, 0.93);
+  font-size: 0.82rem;
+  line-height: 1.25;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .readout {
@@ -114,6 +177,22 @@ body {
 }
 
 @media (max-width: 640px) {
+  .fish-inspector {
+    top: 16px;
+    right: 16px;
+    width: min(250px, calc(100% - 32px));
+    padding: 12px 14px;
+  }
+
+  .fish-inspector h2 {
+    font-size: 1.24rem;
+  }
+
+  .fish-inspector dl {
+    margin-top: 10px;
+    gap: 8px;
+  }
+
   .plaque {
     left: 20px;
     bottom: 22px;

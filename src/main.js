@@ -5,6 +5,11 @@ import aquariumConfig from "./aquarium-config.json";
 import "./styles.css";
 
 const canvas = document.querySelector("#aquarium");
+const fishInspector = document.querySelector("#fish-inspector");
+const selectedFishName = document.querySelector("#selected-fish-name");
+const selectedFishType = document.querySelector("#selected-fish-type");
+const selectedFishSize = document.querySelector("#selected-fish-size");
+
 const renderer = new THREE.WebGLRenderer({
   canvas,
   antialias: true,
@@ -54,7 +59,14 @@ const tank = {
 
 const updatables = [];
 const mouse = new THREE.Vector2();
+const clickPointer = new THREE.Vector2();
+const pointerDownPosition = new THREE.Vector2();
 const tmpVec = new THREE.Vector3();
+const raycaster = new THREE.Raycaster();
+const selectableFish = [];
+const fishHitTargets = [];
+let selectedFish = null;
+let hasPointerDown = false;
 
 const palette = {
   waterA: new THREE.Color(0x143f55),
@@ -96,6 +108,43 @@ function configuredVector(value, fallback = new THREE.Vector3()) {
     configuredNumber(value.z, fallback.z),
   );
 }
+
+function humanizeId(value = "") {
+  return value
+    .replace(/[_-]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim()
+    .replace(/\b\w/g, (letter) => letter.toUpperCase());
+}
+
+function createSelectionHalo() {
+  const group = new THREE.Group();
+  const gold = new THREE.MeshBasicMaterial({
+    color: 0xffcf6a,
+    transparent: true,
+    opacity: 0.88,
+    blending: THREE.AdditiveBlending,
+    depthWrite: false,
+  });
+  const cyan = new THREE.MeshBasicMaterial({
+    color: 0x8ff8ff,
+    transparent: true,
+    opacity: 0.34,
+    blending: THREE.AdditiveBlending,
+    depthWrite: false,
+  });
+
+  const outer = new THREE.Mesh(new THREE.TorusGeometry(0.92, 0.018, 10, 96), gold);
+  const inner = new THREE.Mesh(new THREE.TorusGeometry(0.72, 0.012, 10, 96), cyan);
+  const pulse = new THREE.Mesh(new THREE.TorusGeometry(1.12, 0.01, 10, 96), cyan.clone());
+  group.add(outer, inner, pulse);
+  group.visible = false;
+  group.userData.pulse = pulse;
+  scene.add(group);
+  return group;
+}
+
+const selectionHalo = createSelectionHalo();
 
 function createNoiseTexture(size = 256) {
   const data = new Uint8Array(size * size * 4);
@@ -931,6 +980,7 @@ class SwimmingFish {
   constructor({
     name,
     typeId,
+    sizeMultiplier,
     color,
     accent,
     size,
@@ -945,10 +995,18 @@ class SwimmingFish {
   }) {
     this.name = name;
     this.typeId = typeId;
+    this.typeLabel = humanizeId(typeId);
+    this.sizeMultiplier = sizeMultiplier;
+    this.visualSize = size;
     this.mesh = createFishGeometry(color, accent, size, species);
     this.mesh.name = name;
     this.mesh.userData.fishName = name;
     this.mesh.userData.fishType = typeId;
+    this.mesh.userData.swimmingFish = this;
+    this.mesh.traverse((child) => {
+      child.userData.swimmingFish = this;
+      if (child.isMesh) fishHitTargets.push(child);
+    });
     this.center = center;
     this.radiusX = radiusX;
     this.radiusZ = radiusZ;
@@ -957,6 +1015,7 @@ class SwimmingFish {
     this.phase = phase;
     this.schoolingOffset = schoolingOffset;
     this.previous = new THREE.Vector3();
+    selectableFish.push(this);
     scene.add(this.mesh);
   }
 
@@ -1000,6 +1059,7 @@ function createFishSchools() {
       const fish = new SwimmingFish({
         name: fishEntry.name ?? `${fishType.id ?? "fish"}_${i + 1}`,
         typeId: fishType.id ?? "configured_fish",
+        sizeMultiplier,
         color: fishType.bodyColor ?? "#6be6ff",
         accent: fishType.accentColor ?? "#ffd15c",
         species: fishType.species ?? "reef",
@@ -1015,6 +1075,74 @@ function createFishSchools() {
       updatables.push((time) => fish.update(time));
     });
   });
+}
+
+function getMaterialList(material) {
+  if (!material) return [];
+  return Array.isArray(material) ? material : [material];
+}
+
+function setFishMaterialHighlight(fish, isHighlighted) {
+  fish.mesh.traverse((child) => {
+    getMaterialList(child.material).forEach((material) => {
+      if (!material.userData.selectionBase) {
+        material.userData.selectionBase = {};
+        if (material.emissive) material.userData.selectionBase.emissive = material.emissive.clone();
+        if (Number.isFinite(material.emissiveIntensity)) {
+          material.userData.selectionBase.emissiveIntensity = material.emissiveIntensity;
+        }
+      }
+
+      const base = material.userData.selectionBase;
+      if (material.emissive) {
+        material.emissive.copy(isHighlighted ? new THREE.Color(0xffcf6a) : base.emissive);
+      }
+      if (Number.isFinite(material.emissiveIntensity)) {
+        material.emissiveIntensity = isHighlighted ? Math.max(base.emissiveIntensity ?? 0, 0.52) : base.emissiveIntensity;
+      }
+      material.needsUpdate = true;
+    });
+  });
+}
+
+function updateFishInspector(fish) {
+  selectedFishName.textContent = fish.name;
+  selectedFishType.textContent = fish.typeLabel;
+  selectedFishSize.textContent = `${fish.sizeMultiplier.toFixed(2)}x`;
+  fishInspector.hidden = false;
+}
+
+function clearFishSelection() {
+  if (selectedFish) setFishMaterialHighlight(selectedFish, false);
+  selectedFish = null;
+  selectionHalo.visible = false;
+  fishInspector.hidden = true;
+}
+
+function selectFish(fish) {
+  if (!fish) {
+    clearFishSelection();
+    return;
+  }
+
+  if (selectedFish && selectedFish !== fish) setFishMaterialHighlight(selectedFish, false);
+  selectedFish = fish;
+  setFishMaterialHighlight(fish, true);
+  updateFishInspector(fish);
+  selectionHalo.visible = true;
+  controls.autoRotate = false;
+}
+
+function pickFishFromPointer(event) {
+  const rect = canvas.getBoundingClientRect();
+  clickPointer.set(
+    ((event.clientX - rect.left) / rect.width) * 2 - 1,
+    -((event.clientY - rect.top) / rect.height) * 2 + 1,
+  );
+  raycaster.setFromCamera(clickPointer, camera);
+  const intersections = raycaster.intersectObjects(fishHitTargets, false);
+  const hit = intersections.find((intersection) => intersection.object.userData.swimmingFish);
+  selectFish(hit?.object.userData.swimmingFish ?? null);
 }
 
 function createRay() {
@@ -1321,6 +1449,34 @@ function onPointerMove(event) {
   mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 }
 
+function onPointerDown(event) {
+  pointerDownPosition.set(event.clientX, event.clientY);
+  hasPointerDown = true;
+}
+
+function onPointerUp(event) {
+  if (!hasPointerDown) return;
+  hasPointerDown = false;
+  const dragDistance = pointerDownPosition.distanceTo(new THREE.Vector2(event.clientX, event.clientY));
+  if (dragDistance > 6) return;
+  pickFishFromPointer(event);
+}
+
+function onCanvasClick(event) {
+  pickFishFromPointer(event);
+}
+
+function updateSelectionHalo(time) {
+  if (!selectedFish) return;
+  selectedFish.mesh.getWorldPosition(selectionHalo.position);
+  selectionHalo.quaternion.copy(camera.quaternion);
+  selectionHalo.scale.setScalar(Math.max(0.76, selectedFish.visualSize * 2.35));
+
+  const pulse = selectionHalo.userData.pulse;
+  pulse.scale.setScalar(1 + Math.sin(time * 4.1) * 0.075);
+  pulse.material.opacity = 0.28 + Math.sin(time * 3.4) * 0.08;
+}
+
 function animate() {
   const elapsed = clock.getElapsedTime();
   const delta = Math.min(clock.getDelta(), 0.033);
@@ -1330,6 +1486,7 @@ function animate() {
   const desiredTarget = new THREE.Vector3(mouse.x * 0.6, 2.2 + mouse.y * 0.25, 0);
   controls.target.lerp(desiredTarget, 0.015);
   controls.update();
+  updateSelectionHalo(elapsed);
 
   renderer.render(scene, camera);
   requestAnimationFrame(animate);
@@ -1337,6 +1494,51 @@ function animate() {
 
 window.addEventListener("resize", onResize);
 window.addEventListener("pointermove", onPointerMove);
+canvas.addEventListener("pointerdown", onPointerDown);
+window.addEventListener("pointerup", onPointerUp);
+canvas.addEventListener("click", onCanvasClick);
+
+function installDevDebugTools() {
+  if (!import.meta.env.DEV) return;
+  window.__aquariumDebug = {
+    getFishScreenPositions() {
+      return selectableFish.map((fish) => {
+        const position = new THREE.Vector3();
+        fish.mesh.getWorldPosition(position);
+        position.project(camera);
+        return {
+          name: fish.name,
+          type: fish.typeLabel,
+          x: (position.x * 0.5 + 0.5) * window.innerWidth,
+          y: (-position.y * 0.5 + 0.5) * window.innerHeight,
+          z: position.z,
+        };
+      });
+    },
+    getSelectedFish() {
+      if (!selectedFish) return null;
+      return {
+        name: selectedFish.name,
+        type: selectedFish.typeLabel,
+        sizeMultiplier: selectedFish.sizeMultiplier,
+      };
+    },
+    getFishAtScreenPoint(x, y) {
+      clickPointer.set((x / window.innerWidth) * 2 - 1, -(y / window.innerHeight) * 2 + 1);
+      raycaster.setFromCamera(clickPointer, camera);
+      const intersections = raycaster.intersectObjects(fishHitTargets, false);
+      const hit = intersections.find((intersection) => intersection.object.userData.swimmingFish);
+      if (!hit) return null;
+      const fish = hit.object.userData.swimmingFish;
+      return {
+        name: fish.name,
+        type: fish.typeLabel,
+        distance: hit.distance,
+      };
+    },
+  };
+}
 
 setupScene();
+installDevDebugTools();
 animate();
