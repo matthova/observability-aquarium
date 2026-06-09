@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
+import aquariumConfig from "./aquarium-config.json";
 import "./styles.css";
 
 const canvas = document.querySelector("#aquarium");
@@ -54,8 +55,6 @@ const tank = {
 const updatables = [];
 const mouse = new THREE.Vector2();
 const tmpVec = new THREE.Vector3();
-const tmpQuat = new THREE.Quaternion();
-const tmpMatrix = new THREE.Matrix4();
 
 const palette = {
   waterA: new THREE.Color(0x143f55),
@@ -83,8 +82,23 @@ function choice(items) {
   return items[Math.floor(random() * items.length)];
 }
 
-function easeInOutSine(value) {
-  return -(Math.cos(Math.PI * value) - 1) / 2;
+function configuredNumber(value, fallback = 0) {
+  if (Array.isArray(value) && value.length >= 2) return rand(Number(value[0]), Number(value[1]));
+  if (Number.isFinite(value)) return value;
+  return fallback;
+}
+
+function configuredVector(value, fallback = new THREE.Vector3()) {
+  if (!value) return fallback.clone();
+  return new THREE.Vector3(
+    configuredNumber(value.x, fallback.x),
+    configuredNumber(value.y, fallback.y),
+    configuredNumber(value.z, fallback.z),
+  );
+}
+
+function configuredAmount(value) {
+  return Math.max(0, Math.floor(Number(value) || 0));
 }
 
 function createNoiseTexture(size = 256) {
@@ -970,49 +984,31 @@ class SwimmingFish {
 }
 
 function createFishSchools() {
-  const reefColors = [
-    [0xff7d45, 0xffffff, "clown"],
-    [0xf7ce46, 0x235cff, "tang"],
-    [0x6be6ff, 0xffd15c, "reef"],
-    [0xff5f9b, 0x46256d, "angelfish"],
-    [0xa7f060, 0x206f54, "reef"],
-    [0xffd34e, 0x111823, "tang"],
-  ];
+  const fishTypes = aquariumConfig?.fish?.types ?? [];
 
-  for (let i = 0; i < 44; i += 1) {
-    const [color, accent, species] = choice(reefColors);
-    const fish = new SwimmingFish({
-      color,
-      accent,
-      species,
-      size: rand(0.32, 0.72),
-      center: new THREE.Vector3(rand(-2, 2), rand(-0.4, 3.6), rand(-1.8, 2.5)),
-      radiusX: rand(4.3, 11.6),
-      radiusZ: rand(2.6, 7.2),
-      yAmp: rand(0.28, 1.35),
-      speed: rand(0.13, 0.34),
-      phase: rand(0, Math.PI * 2),
-      schoolingOffset: new THREE.Vector3(rand(-1.5, 1.5), rand(-0.8, 0.8), rand(-1, 1)),
-    });
-    updatables.push((time) => fish.update(time));
-  }
+  fishTypes.forEach((fishType) => {
+    const amount = configuredAmount(fishType.amount);
 
-  for (let i = 0; i < 13; i += 1) {
-    const fish = new SwimmingFish({
-      color: 0xc9f7ff,
-      accent: 0x72b0ff,
-      species: "reef",
-      size: rand(0.2, 0.34),
-      center: new THREE.Vector3(0, 5.2, -1.5),
-      radiusX: 9.5,
-      radiusZ: 4.8,
-      yAmp: 0.48,
-      speed: rand(0.38, 0.55),
-      phase: i * 0.23,
-      schoolingOffset: new THREE.Vector3(rand(-0.9, 0.9), rand(-0.35, 0.35), rand(-0.8, 0.8)),
-    });
-    updatables.push((time) => fish.update(time));
-  }
+    for (let i = 0; i < amount; i += 1) {
+      const phase = Number.isFinite(fishType.phaseStep)
+        ? i * fishType.phaseStep + configuredNumber(fishType.phaseJitter, 0)
+        : rand(0, Math.PI * 2);
+      const fish = new SwimmingFish({
+        color: fishType.bodyColor ?? "#6be6ff",
+        accent: fishType.accentColor ?? "#ffd15c",
+        species: fishType.species ?? "reef",
+        size: configuredNumber(fishType.size, 0.5),
+        center: configuredVector(fishType.center),
+        radiusX: configuredNumber(fishType.radiusX, 7),
+        radiusZ: configuredNumber(fishType.radiusZ, 4),
+        yAmp: configuredNumber(fishType.yAmp, 0.7),
+        speed: configuredNumber(fishType.speed, 0.25),
+        phase,
+        schoolingOffset: configuredVector(fishType.schoolingOffset),
+      });
+      updatables.push((time) => fish.update(time));
+    }
+  });
 }
 
 function createRay() {

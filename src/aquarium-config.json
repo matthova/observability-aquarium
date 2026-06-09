@@ -1,0 +1,105 @@
+{
+  "fish": {
+    "types": [
+      {
+        "id": "orange_clownfish",
+        "amount": 8,
+        "species": "clown",
+        "bodyColor": "#ff7d45",
+        "accentColor": "#ffffff",
+        "size": [0.32, 0.68],
+        "center": { "x": [-2, 2], "y": [-0.4, 3.6], "z": [-1.8, 2.5] },
+        "radiusX": [4.3, 11.6],
+        "radiusZ": [2.6, 7.2],
+        "yAmp": [0.28, 1.35],
+        "speed": [0.13, 0.34],
+        "schoolingOffset": { "x": [-1.5, 1.5], "y": [-0.8, 0.8], "z": [-1, 1] }
+      },
+      {
+        "id": "yellow_blue_tang",
+        "amount": 9,
+        "species": "tang",
+        "bodyColor": "#f7ce46",
+        "accentColor": "#235cff",
+        "size": [0.36, 0.72],
+        "center": { "x": [-2, 2], "y": [-0.4, 3.6], "z": [-1.8, 2.5] },
+        "radiusX": [4.3, 11.6],
+        "radiusZ": [2.6, 7.2],
+        "yAmp": [0.28, 1.35],
+        "speed": [0.13, 0.34],
+        "schoolingOffset": { "x": [-1.5, 1.5], "y": [-0.8, 0.8], "z": [-1, 1] }
+      },
+      {
+        "id": "turquoise_anthias",
+        "amount": 8,
+        "species": "reef",
+        "bodyColor": "#6be6ff",
+        "accentColor": "#ffd15c",
+        "size": [0.3, 0.62],
+        "center": { "x": [-2, 2], "y": [-0.4, 3.6], "z": [-1.8, 2.5] },
+        "radiusX": [4.3, 11.6],
+        "radiusZ": [2.6, 7.2],
+        "yAmp": [0.28, 1.35],
+        "speed": [0.13, 0.34],
+        "schoolingOffset": { "x": [-1.5, 1.5], "y": [-0.8, 0.8], "z": [-1, 1] }
+      },
+      {
+        "id": "rose_angelfish",
+        "amount": 7,
+        "species": "angelfish",
+        "bodyColor": "#ff5f9b",
+        "accentColor": "#46256d",
+        "size": [0.38, 0.72],
+        "center": { "x": [-2, 2], "y": [-0.4, 3.6], "z": [-1.8, 2.5] },
+        "radiusX": [4.3, 11.6],
+        "radiusZ": [2.6, 7.2],
+        "yAmp": [0.28, 1.35],
+        "speed": [0.13, 0.34],
+        "schoolingOffset": { "x": [-1.5, 1.5], "y": [-0.8, 0.8], "z": [-1, 1] }
+      },
+      {
+        "id": "green_chromis",
+        "amount": 8,
+        "species": "reef",
+        "bodyColor": "#a7f060",
+        "accentColor": "#206f54",
+        "size": [0.28, 0.58],
+        "center": { "x": [-2, 2], "y": [-0.4, 3.6], "z": [-1.8, 2.5] },
+        "radiusX": [4.3, 11.6],
+        "radiusZ": [2.6, 7.2],
+        "yAmp": [0.28, 1.35],
+        "speed": [0.13, 0.34],
+        "schoolingOffset": { "x": [-1.5, 1.5], "y": [-0.8, 0.8], "z": [-1, 1] }
+      },
+      {
+        "id": "gold_black_tang",
+        "amount": 4,
+        "species": "tang",
+        "bodyColor": "#ffd34e",
+        "accentColor": "#111823",
+        "size": [0.34, 0.7],
+        "center": { "x": [-2, 2], "y": [-0.4, 3.6], "z": [-1.8, 2.5] },
+        "radiusX": [4.3, 11.6],
+        "radiusZ": [2.6, 7.2],
+        "yAmp": [0.28, 1.35],
+        "speed": [0.13, 0.34],
+        "schoolingOffset": { "x": [-1.5, 1.5], "y": [-0.8, 0.8], "z": [-1, 1] }
+      },
+      {
+        "id": "glass_dartfish",
+        "amount": 13,
+        "species": "reef",
+        "bodyColor": "#c9f7ff",
+        "accentColor": "#72b0ff",
+        "size": [0.2, 0.34],
+        "center": { "x": 0, "y": 5.2, "z": -1.5 },
+        "radiusX": 9.5,
+        "radiusZ": 4.8,
+        "yAmp": 0.48,
+        "speed": [0.38, 0.55],
+        "phaseStep": 0.23,
+        "schoolingOffset": { "x": [-0.9, 0.9], "y": [-0.35, 0.35], "z": [-0.8, 0.8] }
+      }
+    ]
+  }
+}
