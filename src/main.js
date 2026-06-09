@@ -1207,7 +1207,7 @@ function createRay() {
     const next = new THREE.Vector3(Math.cos(t) * 7.2, 2.1 + Math.sin(t * 1.6) * 0.7, Math.sin(t) * 5.4);
     const direction = next.clone().sub(previous.lengthSq() ? previous : next.clone().addScalar(0.01)).normalize();
     group.position.copy(next);
-    group.rotation.y = Math.atan2(direction.x, direction.z) + Math.PI / 2;
+    group.rotation.y = Math.atan2(direction.x, direction.z) - Math.PI / 2;
     group.rotation.z = Math.sin(time * 0.8) * 0.08;
     leftWing.rotation.z = Math.sin(time * 2.6) * 0.22;
     rightWing.rotation.z = -Math.sin(time * 2.6) * 0.22;
