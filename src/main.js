@@ -9,6 +9,10 @@ const fishInspector = document.querySelector("#fish-inspector");
 const selectedFishName = document.querySelector("#selected-fish-name");
 const selectedFishType = document.querySelector("#selected-fish-type");
 const selectedFishSize = document.querySelector("#selected-fish-size");
+const fishDirectoryToggle = document.querySelector("#fish-directory-toggle");
+const fishDirectoryPanel = document.querySelector("#fish-directory-panel");
+const fishDirectoryCount = document.querySelector("#fish-directory-count");
+const fishList = document.querySelector("#fish-list");
 
 const renderer = new THREE.WebGLRenderer({
   canvas,
@@ -65,7 +69,10 @@ const tmpVec = new THREE.Vector3();
 const raycaster = new THREE.Raycaster();
 const selectableFish = [];
 const fishHitTargets = [];
+const fishById = new Map();
+const fishListButtons = new Map();
 let selectedFish = null;
+let hoveredFish = null;
 let hasPointerDown = false;
 let suppressNextClick = false;
 
@@ -989,6 +996,7 @@ function createFishGeometry(color, accent, size = 1, species = "reef") {
 
 class SwimmingFish {
   constructor({
+    id,
     name,
     typeId,
     sizeMultiplier,
@@ -1004,6 +1012,7 @@ class SwimmingFish {
     species,
     schoolingOffset = new THREE.Vector3(),
   }) {
+    this.id = id;
     this.name = name;
     this.typeId = typeId;
     this.typeLabel = humanizeId(typeId);
@@ -1011,6 +1020,7 @@ class SwimmingFish {
     this.visualSize = size;
     this.mesh = createFishGeometry(color, accent, size, species);
     this.mesh.name = name;
+    this.mesh.userData.fishId = id;
     this.mesh.userData.fishName = name;
     this.mesh.userData.fishType = typeId;
     this.mesh.userData.swimmingFish = this;
@@ -1027,6 +1037,7 @@ class SwimmingFish {
     this.schoolingOffset = schoolingOffset;
     this.previous = new THREE.Vector3();
     selectableFish.push(this);
+    fishById.set(this.id, this);
     scene.add(this.mesh);
   }
 
@@ -1058,6 +1069,7 @@ class SwimmingFish {
 
 function createFishSchools() {
   const fishTypes = aquariumConfig?.fish?.types ?? [];
+  let fishIndex = 0;
 
   fishTypes.forEach((fishType) => {
     const fishEntries = Array.isArray(fishType.fish) ? fishType.fish : [];
@@ -1068,6 +1080,7 @@ function createFishSchools() {
         : rand(0, Math.PI * 2);
       const sizeMultiplier = configuredNumber(fishEntry.sizeMultiplier, 1);
       const fish = new SwimmingFish({
+        id: `fish-${fishIndex}`,
         name: fishEntry.name ?? `${fishType.id ?? "fish"}_${i + 1}`,
         typeId: fishType.id ?? "configured_fish",
         sizeMultiplier,
@@ -1083,9 +1096,74 @@ function createFishSchools() {
         phase,
         schoolingOffset: configuredVector(fishType.schoolingOffset),
       });
+      fishIndex += 1;
       updatables.push((time) => fish.update(time));
     });
   });
+}
+
+function setFishDirectoryExpanded(isExpanded) {
+  fishDirectoryToggle.setAttribute("aria-expanded", String(isExpanded));
+  fishDirectoryPanel.hidden = !isExpanded;
+  if (isExpanded && selectedFish) {
+    requestAnimationFrame(() => {
+      fishListButtons.get(selectedFish.id)?.scrollIntoView({ block: "nearest" });
+    });
+  }
+}
+
+function buildFishDirectory() {
+  fishDirectoryCount.textContent = String(selectableFish.length);
+  fishList.replaceChildren();
+  fishListButtons.clear();
+
+  selectableFish.forEach((fish) => {
+    const item = document.createElement("button");
+    item.className = "fish-list-item";
+    item.type = "button";
+    item.dataset.fishId = fish.id;
+    item.setAttribute("role", "option");
+    item.setAttribute("aria-selected", "false");
+    item.addEventListener("pointerenter", () => setHoveredFish(fish));
+    item.addEventListener("pointerleave", () => setHoveredFish(null));
+    item.addEventListener("focus", () => setHoveredFish(fish));
+    item.addEventListener("blur", () => setHoveredFish(null));
+
+    const name = document.createElement("span");
+    name.className = "fish-list-name";
+    name.textContent = fish.name;
+
+    const size = document.createElement("span");
+    size.className = "fish-list-size";
+    size.textContent = `${fish.sizeMultiplier.toFixed(2)}x`;
+
+    const type = document.createElement("span");
+    type.className = "fish-list-type";
+    type.textContent = fish.typeLabel;
+
+    item.append(name, size, type);
+    fishList.append(item);
+    fishListButtons.set(fish.id, item);
+  });
+}
+
+function setHoveredFish(fish) {
+  if (hoveredFish === fish) return;
+  if (hoveredFish && hoveredFish !== selectedFish) setFishMaterialHighlight(hoveredFish, false);
+  hoveredFish = fish;
+  if (hoveredFish && hoveredFish !== selectedFish) setFishMaterialHighlight(hoveredFish, true);
+}
+
+function updateFishDirectorySelection(fish) {
+  fishListButtons.forEach((button, id) => {
+    const isSelected = Boolean(fish && id === fish.id);
+    button.classList.toggle("is-selected", isSelected);
+    button.setAttribute("aria-selected", String(isSelected));
+  });
+
+  if (!fish) return;
+  const selectedButton = fishListButtons.get(fish.id);
+  selectedButton?.scrollIntoView({ block: "nearest" });
 }
 
 function getMaterialList(material) {
@@ -1124,10 +1202,11 @@ function updateFishInspector(fish) {
 }
 
 function clearFishSelection() {
-  if (selectedFish) setFishMaterialHighlight(selectedFish, false);
+  if (selectedFish && selectedFish !== hoveredFish) setFishMaterialHighlight(selectedFish, false);
   selectedFish = null;
   selectionHalo.visible = false;
   fishInspector.hidden = true;
+  updateFishDirectorySelection(null);
 }
 
 function selectFish(fish) {
@@ -1136,10 +1215,13 @@ function selectFish(fish) {
     return;
   }
 
-  if (selectedFish && selectedFish !== fish) setFishMaterialHighlight(selectedFish, false);
+  if (selectedFish && selectedFish !== fish) {
+    setFishMaterialHighlight(selectedFish, selectedFish === hoveredFish);
+  }
   selectedFish = fish;
   setFishMaterialHighlight(fish, true);
   updateFishInspector(fish);
+  updateFishDirectorySelection(fish);
   selectionHalo.visible = true;
   controls.autoRotate = false;
 }
@@ -1154,6 +1236,19 @@ function pickFishFromPointer(event) {
   const intersections = raycaster.intersectObjects(fishHitTargets, false);
   const hit = intersections.find((intersection) => intersection.object.userData.swimmingFish);
   selectFish(hit?.object.userData.swimmingFish ?? null);
+}
+
+function onFishDirectoryToggleClick() {
+  const isExpanded = fishDirectoryToggle.getAttribute("aria-expanded") === "true";
+  setFishDirectoryExpanded(!isExpanded);
+}
+
+function onFishListClick(event) {
+  const item = event.target.closest(".fish-list-item");
+  if (!item) return;
+  const fish = fishById.get(item.dataset.fishId);
+  if (!fish) return;
+  selectFish(fish);
 }
 
 function createRay() {
@@ -1442,6 +1537,7 @@ function setupScene() {
   createBubbleColumns();
   createSuspendedParticles();
   createFishSchools();
+  buildFishDirectory();
   createRay();
   createJellyfish();
 }
@@ -1518,6 +1614,8 @@ window.addEventListener("pointermove", onPointerMove);
 canvas.addEventListener("pointerdown", onPointerDown);
 window.addEventListener("pointerup", onPointerUp);
 canvas.addEventListener("click", onCanvasClick);
+fishDirectoryToggle.addEventListener("click", onFishDirectoryToggleClick);
+fishList.addEventListener("click", onFishListClick);
 
 function installDevDebugTools() {
   if (!import.meta.env.DEV) return;

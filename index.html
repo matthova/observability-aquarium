@@ -11,6 +11,21 @@
       <div class="scene-shell">
         <canvas id="aquarium"></canvas>
         <div class="vignette" aria-hidden="true"></div>
+        <section class="fish-directory" aria-label="Fish directory">
+          <button
+            class="fish-directory-toggle"
+            id="fish-directory-toggle"
+            type="button"
+            aria-expanded="false"
+            aria-controls="fish-directory-panel"
+          >
+            <span>Fish</span>
+            <span id="fish-directory-count">0</span>
+          </button>
+          <div class="fish-directory-panel" id="fish-directory-panel" hidden>
+            <div class="fish-list" id="fish-list" role="listbox" aria-label="Fish"></div>
+          </div>
+        </section>
         <section class="plaque" aria-label="Aquarium scene status">
           <p class="eyebrow">Ocean Atrium</p>
           <h1>Living Reef</h1>
