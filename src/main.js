@@ -1144,6 +1144,38 @@ function createFishGeometry(color, accent, size = 1, species = "reef") {
   return group;
 }
 
+function normalizedErrorHeat(value) {
+  return THREE.MathUtils.clamp(Number.isFinite(value) ? value : 0, 0, 1);
+}
+
+function applyFishErrorGlow(mesh, errorHeat) {
+  if (errorHeat <= 0) return;
+
+  const red = new THREE.Color(0xff2117);
+  const redAmount = Math.pow(errorHeat, 0.78);
+
+  mesh.traverse((child) => {
+    if (!child.isMesh || child.userData.isClickTarget) return;
+
+    getMaterialList(child.material).forEach((material) => {
+      if (!material.emissive) return;
+
+      if (!material.userData.errorGlowBaseColor && material.color) {
+        material.userData.errorGlowBaseColor = material.color.clone();
+      }
+
+      material.emissive.copy(red);
+      material.emissiveIntensity = 0.08 + redAmount * 1.42;
+
+      if (material.color && material.userData.errorGlowBaseColor) {
+        material.color.copy(material.userData.errorGlowBaseColor).lerp(red, redAmount * 0.34);
+      }
+
+      material.needsUpdate = true;
+    });
+  });
+}
+
 class SwimmingFish {
   constructor({
     id,
@@ -1178,8 +1210,11 @@ class SwimmingFish {
     this.failureCount = failureCount;
     this.errorRate = errorRate;
     this.normalizedErrorRate = normalizedErrorRate;
+    this.errorHeat = normalizedErrorHeat(normalizedErrorRate);
+    this.isHighestErrorRate = this.errorHeat >= 0.999;
     this.visualSize = size;
     this.mesh = createFishGeometry(color, accent, size, species);
+    applyFishErrorGlow(this.mesh, this.errorHeat);
     this.mesh.name = name;
     this.mesh.userData.fishId = id;
     this.mesh.userData.fishName = name;
@@ -1193,7 +1228,8 @@ class SwimmingFish {
     this.radiusX = radiusX;
     this.radiusZ = radiusZ;
     this.yAmp = yAmp;
-    this.speed = speed;
+    this.baseSpeed = speed;
+    this.speed = speed * THREE.MathUtils.lerp(1, 0.32, this.errorHeat);
     this.phase = phase;
     this.schoolingOffset = schoolingOffset;
     this.previous = new THREE.Vector3();
@@ -1224,8 +1260,10 @@ class SwimmingFish {
     const direction = tmpVec.clone().sub(this.previous).normalize();
     const yaw = Math.atan2(direction.x, direction.z) - Math.PI / 2;
     const pitch = -direction.y * 0.42;
+    const errorFlip = this.isHighestErrorRate ? Math.PI : 0;
+    const swimRoll = Math.sin(time * this.speed * 1.6 + this.phase) * 0.06;
     this.mesh.position.copy(tmpVec);
-    this.mesh.rotation.set(pitch, yaw, Math.sin(time * this.speed * 1.6 + this.phase) * 0.06);
+    this.mesh.rotation.set(pitch, yaw, errorFlip + swimRoll);
     this.mesh.userData.tail.rotation.y = Math.sin(time * 10 * this.speed + this.phase) * 0.48;
     this.mesh.userData.leftFin.rotation.y = Math.sin(time * 7 * this.speed + this.phase) * 0.24;
     this.mesh.userData.rightFin.rotation.y = -Math.sin(time * 7 * this.speed + this.phase) * 0.24;
@@ -1840,6 +1878,10 @@ function installDevDebugTools() {
           errorRate: fish.errorRate,
           impactScore: fishImpactScore(fish),
           normalizedErrorRate: fish.normalizedErrorRate,
+          errorHeat: fish.errorHeat,
+          baseSpeed: fish.baseSpeed,
+          speed: fish.speed,
+          isHighestErrorRate: fish.isHighestErrorRate,
           worldY: fish.mesh.position.y,
           x: (position.x * 0.5 + 0.5) * window.innerWidth,
           y: (-position.y * 0.5 + 0.5) * window.innerHeight,
@@ -1859,6 +1901,10 @@ function installDevDebugTools() {
         errorRate: selectedFish.errorRate,
         impactScore: fishImpactScore(selectedFish),
         normalizedErrorRate: selectedFish.normalizedErrorRate,
+        errorHeat: selectedFish.errorHeat,
+        baseSpeed: selectedFish.baseSpeed,
+        speed: selectedFish.speed,
+        isHighestErrorRate: selectedFish.isHighestErrorRate,
       };
     },
     getHoveredFish() {
@@ -1873,6 +1919,10 @@ function installDevDebugTools() {
         errorRate: hoveredFish.errorRate,
         impactScore: fishImpactScore(hoveredFish),
         normalizedErrorRate: hoveredFish.normalizedErrorRate,
+        errorHeat: hoveredFish.errorHeat,
+        baseSpeed: hoveredFish.baseSpeed,
+        speed: hoveredFish.speed,
+        isHighestErrorRate: hoveredFish.isHighestErrorRate,
       };
     },
     getFishAtScreenPoint(x, y) {
@@ -1890,6 +1940,10 @@ function installDevDebugTools() {
         errorRate: fish.errorRate,
         impactScore: fishImpactScore(fish),
         normalizedErrorRate: fish.normalizedErrorRate,
+        errorHeat: fish.errorHeat,
+        baseSpeed: fish.baseSpeed,
+        speed: fish.speed,
+        isHighestErrorRate: fish.isHighestErrorRate,
         distance: hit.distance,
       };
     },
