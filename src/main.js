@@ -9,9 +9,12 @@ const fishInspector = document.querySelector("#fish-inspector");
 const selectedFishName = document.querySelector("#selected-fish-name");
 const selectedFishType = document.querySelector("#selected-fish-type");
 const selectedFishSize = document.querySelector("#selected-fish-size");
+const selectedFishError = document.querySelector("#selected-fish-error");
+const selectedFishImpact = document.querySelector("#selected-fish-impact");
 const fishDirectoryToggle = document.querySelector("#fish-directory-toggle");
 const fishDirectoryPanel = document.querySelector("#fish-directory-panel");
 const fishDirectoryCount = document.querySelector("#fish-directory-count");
+const fishSortControls = document.querySelectorAll("[data-fish-sort]");
 const fishList = document.querySelector("#fish-list");
 
 const renderer = new THREE.WebGLRenderer({
@@ -71,8 +74,10 @@ const selectableFish = [];
 const fishHitTargets = [];
 const fishById = new Map();
 const fishListButtons = new Map();
+const normalizedErrorRateByConfigKey = new Map();
 let selectedFish = null;
 let hoveredFish = null;
+let fishSortMode = "volume";
 let hasPointerDown = false;
 let suppressNextClick = false;
 
@@ -123,6 +128,151 @@ function humanizeId(value = "") {
     .replace(/\s+/g, " ")
     .trim()
     .replace(/\b\w/g, (letter) => letter.toUpperCase());
+}
+
+function formatRequestCount(value, compact = false) {
+  if (!Number.isFinite(value)) return null;
+  return new Intl.NumberFormat("en-US", {
+    notation: compact ? "compact" : "standard",
+    maximumFractionDigits: compact ? 1 : 0,
+  }).format(value);
+}
+
+function formatFishVolume(fish, compact = false) {
+  const formattedRequests = formatRequestCount(fish.requestCount, compact);
+  if (formattedRequests) return compact ? formattedRequests : `${formattedRequests} requests`;
+  return `${fish.sizeMultiplier.toFixed(2)}x`;
+}
+
+function formatFishError(fish) {
+  const formattedFailures = formatRequestCount(fish.failureCount);
+  const formattedRate = formatErrorRate(fish.errorRate);
+  if (formattedFailures) return `${formattedRate} · ${formattedFailures} failures`;
+  return formattedRate;
+}
+
+function fishImpactScore(fish) {
+  if (!Number.isFinite(fish?.errorRate) || !Number.isFinite(fish?.requestCount)) return null;
+  return fish.errorRate * fish.requestCount;
+}
+
+function formatImpactScore(fish, compact = false) {
+  const impact = fishImpactScore(fish);
+  if (!Number.isFinite(impact)) return "n/a";
+  const formatted = new Intl.NumberFormat("en-US", {
+    notation: compact ? "compact" : "standard",
+    maximumFractionDigits: compact ? 1 : 1,
+  }).format(impact);
+  return compact ? formatted : `${formatted} impact`;
+}
+
+function formatErrorRate(value) {
+  if (!Number.isFinite(value)) return "n/a";
+  return new Intl.NumberFormat("en-US", {
+    style: "percent",
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(value);
+}
+
+function finiteSortValue(value) {
+  return Number.isFinite(value) ? value : Number.NEGATIVE_INFINITY;
+}
+
+function fishImpactSortValue(fish) {
+  return finiteSortValue(fishImpactScore(fish));
+}
+
+function compareFishForDirectory(a, b) {
+  if (fishSortMode === "error") {
+    return (
+      finiteSortValue(b.errorRate) - finiteSortValue(a.errorRate) ||
+      fishImpactSortValue(b) - fishImpactSortValue(a) ||
+      finiteSortValue(b.requestCount) - finiteSortValue(a.requestCount) ||
+      a.name.localeCompare(b.name)
+    );
+  }
+
+  if (fishSortMode === "impact") {
+    return (
+      fishImpactSortValue(b) - fishImpactSortValue(a) ||
+      finiteSortValue(b.requestCount) - finiteSortValue(a.requestCount) ||
+      a.name.localeCompare(b.name)
+    );
+  }
+
+  return (
+    finiteSortValue(b.requestCount) - finiteSortValue(a.requestCount) ||
+    finiteSortValue(b.errorRate) - finiteSortValue(a.errorRate) ||
+    a.name.localeCompare(b.name)
+  );
+}
+
+function createFishMetric(labelText, valueText, className) {
+  const metric = document.createElement("span");
+  metric.className = `fish-list-metric ${className}`;
+
+  const label = document.createElement("span");
+  label.className = "fish-list-metric-label";
+  label.textContent = labelText;
+
+  const value = document.createElement("span");
+  value.className = "fish-list-metric-value";
+  value.textContent = valueText;
+
+  metric.append(label, value);
+  return metric;
+}
+
+function fishConfigKey(fishType, fishEntry, index) {
+  return `${fishType.id ?? "fish"}:${index}:${fishEntry.name ?? "unnamed"}`;
+}
+
+function buildNormalizedErrorRateMap(fishTypes) {
+  normalizedErrorRateByConfigKey.clear();
+
+  const entries = fishTypes.flatMap((fishType) =>
+    (Array.isArray(fishType.fish) ? fishType.fish : []).map((fishEntry, index) => ({
+      key: fishConfigKey(fishType, fishEntry, index),
+      errorRate: Number.isFinite(fishEntry.errorRate) ? fishEntry.errorRate : 0,
+      requestCount: Number.isFinite(fishEntry.requestCount) ? fishEntry.requestCount : 0,
+      name: fishEntry.name ?? "",
+    })),
+  );
+
+  if (entries.length === 0) return;
+
+  const minRate = Math.min(...entries.map((entry) => entry.errorRate));
+  const maxRate = Math.max(...entries.map((entry) => entry.errorRate));
+
+  if (maxRate > minRate) {
+    entries.forEach((entry) => {
+      normalizedErrorRateByConfigKey.set(entry.key, (entry.errorRate - minRate) / (maxRate - minRate));
+    });
+    return;
+  }
+
+  entries
+    .sort((a, b) => a.requestCount - b.requestCount || a.name.localeCompare(b.name))
+    .forEach((entry, index) => {
+      const normalized = entries.length === 1 ? 0 : index / (entries.length - 1);
+      normalizedErrorRateByConfigKey.set(entry.key, normalized);
+    });
+}
+
+function normalizedErrorRateFor(fishType, fishEntry, index) {
+  return normalizedErrorRateByConfigKey.get(fishConfigKey(fishType, fishEntry, index)) ?? 0;
+}
+
+function normalizedErrorRateToCenterY(normalizedErrorRate) {
+  const normalized = THREE.MathUtils.clamp(normalizedErrorRate, 0, 1);
+  return THREE.MathUtils.lerp(tank.floor + 1.05, tank.surface - 1.35, normalized);
+}
+
+function configuredFishCenter(fishType, fishEntry, index) {
+  const center = configuredVector(fishType.center);
+  center.y = normalizedErrorRateToCenterY(normalizedErrorRateFor(fishType, fishEntry, index));
+  return center;
 }
 
 function createSelectionHalo() {
@@ -999,7 +1149,13 @@ class SwimmingFish {
     id,
     name,
     typeId,
+    typeLabel,
     sizeMultiplier,
+    requestCount,
+    usageShare,
+    failureCount,
+    errorRate,
+    normalizedErrorRate,
     color,
     accent,
     size,
@@ -1015,8 +1171,13 @@ class SwimmingFish {
     this.id = id;
     this.name = name;
     this.typeId = typeId;
-    this.typeLabel = humanizeId(typeId);
+    this.typeLabel = typeLabel ?? humanizeId(typeId);
     this.sizeMultiplier = sizeMultiplier;
+    this.requestCount = requestCount;
+    this.usageShare = usageShare;
+    this.failureCount = failureCount;
+    this.errorRate = errorRate;
+    this.normalizedErrorRate = normalizedErrorRate;
     this.visualSize = size;
     this.mesh = createFishGeometry(color, accent, size, species);
     this.mesh.name = name;
@@ -1044,9 +1205,14 @@ class SwimmingFish {
   positionAt(time, target) {
     const t = time * this.speed + this.phase;
     const wobble = Math.sin(t * 1.7) * 0.45;
+    const y = THREE.MathUtils.clamp(
+      this.center.y + Math.sin(t * 1.42) * this.yAmp + this.schoolingOffset.y,
+      tank.floor + 0.7,
+      tank.surface - 0.55,
+    );
     target.set(
       this.center.x + Math.cos(t) * this.radiusX + this.schoolingOffset.x + wobble,
-      this.center.y + Math.sin(t * 1.42) * this.yAmp + this.schoolingOffset.y,
+      y,
       this.center.z + Math.sin(t) * this.radiusZ + this.schoolingOffset.z,
     );
   }
@@ -1069,6 +1235,7 @@ class SwimmingFish {
 
 function createFishSchools() {
   const fishTypes = aquariumConfig?.fish?.types ?? [];
+  buildNormalizedErrorRateMap(fishTypes);
   let fishIndex = 0;
 
   fishTypes.forEach((fishType) => {
@@ -1079,16 +1246,23 @@ function createFishSchools() {
         ? i * fishType.phaseStep + configuredNumber(fishType.phaseJitter, 0)
         : rand(0, Math.PI * 2);
       const sizeMultiplier = configuredNumber(fishEntry.sizeMultiplier, 1);
+      const normalizedErrorRate = normalizedErrorRateFor(fishType, fishEntry, i);
       const fish = new SwimmingFish({
         id: `fish-${fishIndex}`,
         name: fishEntry.name ?? `${fishType.id ?? "fish"}_${i + 1}`,
         typeId: fishType.id ?? "configured_fish",
+        typeLabel: fishType.label,
         sizeMultiplier,
+        requestCount: fishEntry.requestCount,
+        usageShare: fishEntry.usageShare,
+        failureCount: fishEntry.failureCount,
+        errorRate: fishEntry.errorRate,
+        normalizedErrorRate,
         color: fishType.bodyColor ?? "#6be6ff",
         accent: fishType.accentColor ?? "#ffd15c",
         species: fishType.species ?? "reef",
         size: configuredNumber(fishType.size, 0.5) * sizeMultiplier,
-        center: configuredVector(fishType.center),
+        center: configuredFishCenter(fishType, fishEntry, i),
         radiusX: configuredNumber(fishType.radiusX, 7),
         radiusZ: configuredNumber(fishType.radiusZ, 4),
         yAmp: configuredNumber(fishType.yAmp, 0.7),
@@ -1113,12 +1287,30 @@ function setFishDirectoryExpanded(isExpanded) {
   }
 }
 
+function syncFishSortControls() {
+  fishSortControls.forEach((control) => {
+    const isActive = control.dataset.fishSort === fishSortMode;
+    control.classList.toggle("is-active", isActive);
+    control.setAttribute("aria-pressed", String(isActive));
+  });
+}
+
+function setFishSortMode(sortMode) {
+  if (!["volume", "error", "impact"].includes(sortMode) || fishSortMode === sortMode) return;
+  setHoveredFish(null);
+  fishSortMode = sortMode;
+  syncFishSortControls();
+  buildFishDirectory();
+}
+
 function buildFishDirectory() {
   fishDirectoryCount.textContent = String(selectableFish.length);
   fishList.replaceChildren();
   fishListButtons.clear();
 
-  selectableFish.forEach((fish) => {
+  const directoryFish = [...selectableFish].sort(compareFishForDirectory);
+
+  directoryFish.forEach((fish) => {
     const item = document.createElement("button");
     item.className = "fish-list-item";
     item.type = "button";
@@ -1134,18 +1326,24 @@ function buildFishDirectory() {
     name.className = "fish-list-name";
     name.textContent = fish.name;
 
-    const size = document.createElement("span");
-    size.className = "fish-list-size";
-    size.textContent = `${fish.sizeMultiplier.toFixed(2)}x`;
-
     const type = document.createElement("span");
     type.className = "fish-list-type";
     type.textContent = fish.typeLabel;
 
-    item.append(name, size, type);
+    const metrics = document.createElement("span");
+    metrics.className = "fish-list-metrics";
+    metrics.append(
+      createFishMetric("Volume", formatFishVolume(fish, true), "is-volume"),
+      createFishMetric("Error", formatErrorRate(fish.errorRate), "is-error"),
+      createFishMetric("Impact", formatImpactScore(fish, true), "is-impact"),
+    );
+
+    item.append(name, type, metrics);
     fishList.append(item);
     fishListButtons.set(fish.id, item);
   });
+
+  updateFishDirectorySelection(selectedFish);
 }
 
 function setHoveredFish(fish) {
@@ -1198,7 +1396,9 @@ function setFishMaterialHighlight(fish, isHighlighted) {
 function updateFishInspector(fish) {
   selectedFishName.textContent = fish.name;
   selectedFishType.textContent = fish.typeLabel;
-  selectedFishSize.textContent = `${fish.sizeMultiplier.toFixed(2)}x`;
+  selectedFishSize.textContent = formatFishVolume(fish);
+  selectedFishError.textContent = formatFishError(fish);
+  selectedFishImpact.textContent = formatImpactScore(fish);
   fishInspector.hidden = false;
 }
 
@@ -1242,6 +1442,12 @@ function pickFishFromPointer(event) {
 function onFishDirectoryToggleClick() {
   const isExpanded = fishDirectoryToggle.getAttribute("aria-expanded") === "true";
   setFishDirectoryExpanded(!isExpanded);
+}
+
+function onFishSortClick(event) {
+  const control = event.target.closest("[data-fish-sort]");
+  if (!control) return;
+  setFishSortMode(control.dataset.fishSort);
 }
 
 function onFishListClick(event) {
@@ -1538,9 +1744,8 @@ function setupScene() {
   createBubbleColumns();
   createSuspendedParticles();
   createFishSchools();
+  syncFishSortControls();
   buildFishDirectory();
-  createRay();
-  createJellyfish();
 }
 
 function onResize() {
@@ -1616,6 +1821,7 @@ canvas.addEventListener("pointerdown", onPointerDown);
 window.addEventListener("pointerup", onPointerUp);
 canvas.addEventListener("click", onCanvasClick);
 fishDirectoryToggle.addEventListener("click", onFishDirectoryToggleClick);
+fishSortControls.forEach((control) => control.addEventListener("click", onFishSortClick));
 fishList.addEventListener("click", onFishListClick);
 
 function installDevDebugTools() {
@@ -1629,6 +1835,11 @@ function installDevDebugTools() {
         return {
           name: fish.name,
           type: fish.typeLabel,
+          requestCount: fish.requestCount,
+          failureCount: fish.failureCount,
+          errorRate: fish.errorRate,
+          normalizedErrorRate: fish.normalizedErrorRate,
+          worldY: fish.mesh.position.y,
           x: (position.x * 0.5 + 0.5) * window.innerWidth,
           y: (-position.y * 0.5 + 0.5) * window.innerHeight,
           z: position.z,
@@ -1641,6 +1852,11 @@ function installDevDebugTools() {
         name: selectedFish.name,
         type: selectedFish.typeLabel,
         sizeMultiplier: selectedFish.sizeMultiplier,
+        requestCount: selectedFish.requestCount,
+        usageShare: selectedFish.usageShare,
+        failureCount: selectedFish.failureCount,
+        errorRate: selectedFish.errorRate,
+        normalizedErrorRate: selectedFish.normalizedErrorRate,
       };
     },
     getHoveredFish() {
@@ -1649,6 +1865,11 @@ function installDevDebugTools() {
         name: hoveredFish.name,
         type: hoveredFish.typeLabel,
         sizeMultiplier: hoveredFish.sizeMultiplier,
+        requestCount: hoveredFish.requestCount,
+        usageShare: hoveredFish.usageShare,
+        failureCount: hoveredFish.failureCount,
+        errorRate: hoveredFish.errorRate,
+        normalizedErrorRate: hoveredFish.normalizedErrorRate,
       };
     },
     getFishAtScreenPoint(x, y) {
@@ -1661,6 +1882,10 @@ function installDevDebugTools() {
       return {
         name: fish.name,
         type: fish.typeLabel,
+        requestCount: fish.requestCount,
+        failureCount: fish.failureCount,
+        errorRate: fish.errorRate,
+        normalizedErrorRate: fish.normalizedErrorRate,
         distance: hit.distance,
       };
     },

@@ -23,6 +23,17 @@
             <span id="fish-directory-count">0</span>
           </button>
           <div class="fish-directory-panel" id="fish-directory-panel" hidden>
+            <div class="fish-sort" role="group" aria-label="Sort fish">
+              <button class="fish-sort-option is-active" type="button" data-fish-sort="volume" aria-pressed="true">
+                Volume
+              </button>
+              <button class="fish-sort-option" type="button" data-fish-sort="error" aria-pressed="false">
+                Error
+              </button>
+              <button class="fish-sort-option" type="button" data-fish-sort="impact" aria-pressed="false">
+                Impact
+              </button>
+            </div>
             <div class="fish-list" id="fish-list" role="listbox" aria-label="Fish"></div>
           </div>
         </section>
@@ -30,22 +41,32 @@
           <p class="eyebrow">Ocean Atrium</p>
           <h1>Living Reef</h1>
           <p class="readout">
-            <span>26 C water</span>
-            <span>1.024 salinity</span>
-            <span>Reef gallery A</span>
+            <span>188,722 turns</span>
+            <span>last 24h</span>
+            <span>5,746 failures</span>
+            <span>3.04% error</span>
+            <span>41 model fish</span>
           </p>
         </section>
         <section class="fish-inspector" id="fish-inspector" aria-live="polite" hidden>
           <p class="eyebrow">Selected Fish</p>
-          <h2 id="selected-fish-name">Miso</h2>
+          <h2 id="selected-fish-name">claude-fable-5</h2>
           <dl>
             <div>
               <dt>Type</dt>
-              <dd id="selected-fish-type">Orange clownfish</dd>
+              <dd id="selected-fish-type">Anthropic Claude</dd>
             </div>
             <div>
-              <dt>Size</dt>
-              <dd id="selected-fish-size">1.08x</dd>
+              <dt>Volume</dt>
+              <dd id="selected-fish-size">17,668 requests</dd>
+            </div>
+            <div>
+              <dt>Error</dt>
+              <dd id="selected-fish-error">0.84% · 148 failures</dd>
+            </div>
+            <div>
+              <dt>Impact</dt>
+              <dd id="selected-fish-impact">148.4 impact</dd>
             </div>
           </dl>
         </section>
