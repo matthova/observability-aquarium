@@ -1838,6 +1838,7 @@ function installDevDebugTools() {
           requestCount: fish.requestCount,
           failureCount: fish.failureCount,
           errorRate: fish.errorRate,
+          impactScore: fishImpactScore(fish),
           normalizedErrorRate: fish.normalizedErrorRate,
           worldY: fish.mesh.position.y,
           x: (position.x * 0.5 + 0.5) * window.innerWidth,
@@ -1856,6 +1857,7 @@ function installDevDebugTools() {
         usageShare: selectedFish.usageShare,
         failureCount: selectedFish.failureCount,
         errorRate: selectedFish.errorRate,
+        impactScore: fishImpactScore(selectedFish),
         normalizedErrorRate: selectedFish.normalizedErrorRate,
       };
     },
@@ -1869,6 +1871,7 @@ function installDevDebugTools() {
         usageShare: hoveredFish.usageShare,
         failureCount: hoveredFish.failureCount,
         errorRate: hoveredFish.errorRate,
+        impactScore: fishImpactScore(hoveredFish),
         normalizedErrorRate: hoveredFish.normalizedErrorRate,
       };
     },
@@ -1885,6 +1888,7 @@ function installDevDebugTools() {
         requestCount: fish.requestCount,
         failureCount: fish.failureCount,
         errorRate: fish.errorRate,
+        impactScore: fishImpactScore(fish),
         normalizedErrorRate: fish.normalizedErrorRate,
         distance: hit.distance,
       };

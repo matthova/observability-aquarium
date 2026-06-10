@@ -291,6 +291,7 @@ body {
 
 .eyebrow,
 .plaque h1,
+.plaque-subtext,
 .fish-inspector h2,
 .readout {
   margin: 0;
@@ -307,9 +308,17 @@ body {
 .plaque h1 {
   margin-top: 4px;
   font-size: 1.75rem;
-  line-height: 1;
+  line-height: 1.06;
   font-weight: 750;
   text-wrap: balance;
+}
+
+.plaque-subtext {
+  margin-top: 7px;
+  color: rgba(255, 226, 162, 0.9);
+  font-size: 0.86rem;
+  font-weight: 680;
+  line-height: 1.25;
 }
 
 .fish-inspector h2 {
@@ -385,7 +394,7 @@ body {
   .fish-directory {
     top: 16px;
     left: 16px;
-    width: min(240px, calc(100% - 32px));
+    width: min(330px, calc(100% - 32px));
   }
 
   .fish-directory-toggle {
@@ -393,14 +402,37 @@ body {
     padding: 0 12px;
   }
 
+  .fish-sort-option {
+    min-height: 28px;
+    padding: 0 6px;
+    font-size: 0.66rem;
+  }
+
   .fish-directory-panel {
     max-height: min(300px, calc(100vh - 112px));
+  }
+
+  .fish-list-item {
+    min-height: 72px;
+    padding: 7px 8px;
+  }
+
+  .fish-list-metrics {
+    gap: 4px;
+  }
+
+  .fish-list-metric-label {
+    font-size: 0.5rem;
+  }
+
+  .fish-list-metric-value {
+    font-size: 0.64rem;
   }
 
   .fish-inspector {
     top: 66px;
     right: 16px;
-    width: min(300px, calc(100% - 32px));
+    width: min(330px, calc(100% - 32px));
     padding: 12px 14px;
   }
 
@@ -409,6 +441,7 @@ body {
   }
 
   .fish-inspector dl {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     margin-top: 10px;
     gap: 8px;
   }
