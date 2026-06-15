@@ -1144,6 +1144,89 @@ function createFishGeometry(color, accent, size = 1, species = "reef") {
   return group;
 }
 
+function truncateCanvasText(ctx, text, maxWidth) {
+  if (ctx.measureText(text).width <= maxWidth) return text;
+
+  let truncated = text;
+  while (truncated.length > 1 && ctx.measureText(`${truncated}...`).width > maxWidth) {
+    truncated = truncated.slice(0, -1);
+  }
+
+  return `${truncated.trimEnd()}...`;
+}
+
+function splitFishLabelLines(ctx, text, maxWidth) {
+  const parts = text.replace(/([._-])/g, "$1 ").split(/\s+/).filter(Boolean);
+  const lines = [];
+  let currentLine = "";
+
+  parts.forEach((part) => {
+    const candidate = `${currentLine}${part}`;
+    if (currentLine && ctx.measureText(candidate).width > maxWidth && lines.length < 1) {
+      lines.push(currentLine);
+      currentLine = part;
+      return;
+    }
+
+    currentLine = candidate;
+  });
+
+  if (currentLine) lines.push(currentLine);
+  if (lines.length <= 2) return lines.map((line) => truncateCanvasText(ctx, line, maxWidth));
+
+  return [
+    truncateCanvasText(ctx, lines[0], maxWidth),
+    truncateCanvasText(ctx, lines.slice(1).join(""), maxWidth),
+  ];
+}
+
+function createFishNameLabel(name) {
+  const width = 760;
+  const height = 120;
+  const labelCanvas = document.createElement("canvas");
+  labelCanvas.width = width;
+  labelCanvas.height = height;
+  const ctx = labelCanvas.getContext("2d");
+  const maxTextWidth = width - 88;
+
+  ctx.clearRect(0, 0, width, height);
+  ctx.font = "650 28px Inter, Arial, sans-serif";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.lineJoin = "round";
+
+  const lines = splitFishLabelLines(ctx, name, maxTextWidth);
+  const firstLineY = lines.length === 1 ? 60 : 44;
+  lines.forEach((line, index) => {
+    const y = firstLineY + index * 34;
+    ctx.strokeStyle = "rgba(1, 12, 16, 0.74)";
+    ctx.lineWidth = 6;
+    ctx.strokeText(line, width / 2, y);
+    ctx.fillStyle = "rgba(236, 254, 255, 0.9)";
+    ctx.fillText(line, width / 2, y);
+  });
+
+  const texture = new THREE.CanvasTexture(labelCanvas);
+  texture.colorSpace = THREE.SRGBColorSpace;
+  texture.minFilter = THREE.LinearFilter;
+  texture.magFilter = THREE.LinearFilter;
+  texture.needsUpdate = true;
+
+  const material = new THREE.SpriteMaterial({
+    map: texture,
+    transparent: true,
+    opacity: 0.78,
+    depthTest: false,
+    depthWrite: false,
+  });
+  const sprite = new THREE.Sprite(material);
+  const labelWidth = THREE.MathUtils.clamp(1.35 + name.length * 0.026, 1.62, 2.85) * 3;
+  sprite.scale.set(labelWidth, labelWidth * (height / width), 1);
+  sprite.center.set(0.5, 0.5);
+  sprite.renderOrder = 30;
+  return sprite;
+}
+
 function normalizedErrorHeat(value) {
   return THREE.MathUtils.clamp(Number.isFinite(value) ? value : 0, 0, 1);
 }
@@ -1214,6 +1297,8 @@ class SwimmingFish {
     this.isHighestErrorRate = this.errorHeat >= 0.999;
     this.visualSize = size;
     this.mesh = createFishGeometry(color, accent, size, species);
+    this.label = createFishNameLabel(name);
+    this.labelOffsetY = Math.max(0.36, size * 0.42);
     applyFishErrorGlow(this.mesh, this.errorHeat);
     this.mesh.name = name;
     this.mesh.userData.fishId = id;
@@ -1236,6 +1321,7 @@ class SwimmingFish {
     selectableFish.push(this);
     fishById.set(this.id, this);
     scene.add(this.mesh);
+    scene.add(this.label);
   }
 
   positionAt(time, target) {
@@ -1263,6 +1349,7 @@ class SwimmingFish {
     const errorFlip = this.isHighestErrorRate ? Math.PI : 0;
     const swimRoll = Math.sin(time * this.speed * 1.6 + this.phase) * 0.06;
     this.mesh.position.copy(tmpVec);
+    this.label.position.set(tmpVec.x, tmpVec.y + this.labelOffsetY, tmpVec.z);
     this.mesh.rotation.set(pitch, yaw, errorFlip + swimRoll);
     this.mesh.userData.tail.rotation.y = Math.sin(time * 10 * this.speed + this.phase) * 0.48;
     this.mesh.userData.leftFin.rotation.y = Math.sin(time * 7 * this.speed + this.phase) * 0.24;
