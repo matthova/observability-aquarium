@@ -3,16 +3,16 @@
     "metric": "agent.model.call",
     "window": "last 24h",
     "unit": "requests (model turns)",
-    "totalRequests": 188722,
+    "totalRequests": 193924,
     "representedAs": "one fish per model; fish size scales from 0.5x to 4.0x by a top-heavy request-volume power curve",
     "errorRate": {
       "unit": "fraction of model turns, where 0.025 means 2.5%",
       "min": 0,
-      "max": 0.3333,
+      "max": 1,
       "representedAs": "vertical swim band; normalized so the lowest configured rate maps to the bottom and the highest maps to the top"
     },
-    "totalFailures": 5746,
-    "overallErrorRate": 0.0304,
+    "totalFailures": 16325,
+    "overallErrorRate": 0.0842,
     "volumeScale": {
       "minSizeMultiplier": 0.5,
       "maxSizeMultiplier": 4,
@@ -75,60 +75,60 @@
         },
         "fish": [
           {
-            "name": "claude-fable-5",
-            "requestCount": 17668,
-            "usageShare": 0.093619,
-            "sizeMultiplier": 4,
-            "errorRate": 0.0084,
-            "failureCount": 148
+            "name": "claude-opus-4-8-vertex",
+            "requestCount": 8604,
+            "usageShare": 0.044368,
+            "sizeMultiplier": 2.186,
+            "errorRate": 0.0387,
+            "failureCount": 333
           },
           {
             "name": "claude-opus-4-8-thinking",
-            "requestCount": 9015,
-            "usageShare": 0.047769,
-            "sizeMultiplier": 2.061,
-            "errorRate": 0.044,
-            "failureCount": 397
-          },
-          {
-            "name": "claude-opus-4-8-vertex",
-            "requestCount": 8773,
-            "usageShare": 0.046486,
-            "sizeMultiplier": 2.011,
-            "errorRate": 0.0707,
-            "failureCount": 620
+            "requestCount": 7415,
+            "usageShare": 0.038237,
+            "sizeMultiplier": 1.911,
+            "errorRate": 0.0185,
+            "failureCount": 137
           },
           {
             "name": "claude-opus-4-6-vertex",
-            "requestCount": 3930,
-            "usageShare": 0.020824,
-            "sizeMultiplier": 1.076,
-            "errorRate": 0.0155,
-            "failureCount": 61
-          },
-          {
-            "name": "claude-sonnet-4-6-vertex",
-            "requestCount": 3816,
-            "usageShare": 0.02022,
-            "sizeMultiplier": 1.056,
-            "errorRate": 0.0291,
-            "failureCount": 111
+            "requestCount": 2802,
+            "usageShare": 0.014449,
+            "sizeMultiplier": 0.939,
+            "errorRate": 0.0275,
+            "failureCount": 77
           },
           {
             "name": "claude-opus-4-7-vertex",
-            "requestCount": 3595,
-            "usageShare": 0.019049,
-            "sizeMultiplier": 1.018,
-            "errorRate": 0.0456,
-            "failureCount": 164
+            "requestCount": 2789,
+            "usageShare": 0.014382,
+            "sizeMultiplier": 0.936,
+            "errorRate": 0.029,
+            "failureCount": 81
+          },
+          {
+            "name": "claude-sonnet-4-6-vertex",
+            "requestCount": 2732,
+            "usageShare": 0.014088,
+            "sizeMultiplier": 0.926,
+            "errorRate": 0.0318,
+            "failureCount": 87
           },
           {
             "name": "claude-opus-4-7-thinking",
-            "requestCount": 3132,
-            "usageShare": 0.016596,
-            "sizeMultiplier": 0.939,
-            "errorRate": 0.0227,
-            "failureCount": 71
+            "requestCount": 2416,
+            "usageShare": 0.012458,
+            "sizeMultiplier": 0.867,
+            "errorRate": 0.0219,
+            "failureCount": 53
+          },
+          {
+            "name": "claude-fable-5",
+            "requestCount": 1333,
+            "usageShare": 0.006874,
+            "sizeMultiplier": 0.68,
+            "errorRate": 1,
+            "failureCount": 1333
           }
         ]
       },
@@ -185,44 +185,44 @@
         },
         "fish": [
           {
-            "name": "gpt-5.5-high",
-            "requestCount": 8127,
-            "usageShare": 0.043063,
-            "sizeMultiplier": 1.878,
-            "errorRate": 0.0098,
-            "failureCount": 80
-          },
-          {
             "name": "gpt-5.4-high-code-arena-harness",
-            "requestCount": 7883,
-            "usageShare": 0.04177,
-            "sizeMultiplier": 1.829,
-            "errorRate": 0.0079,
-            "failureCount": 62
+            "requestCount": 8163,
+            "usageShare": 0.042094,
+            "sizeMultiplier": 2.083,
+            "errorRate": 0.0013,
+            "failureCount": 11
           },
           {
             "name": "gpt-5.5",
-            "requestCount": 7611,
-            "usageShare": 0.040329,
-            "sizeMultiplier": 1.774,
-            "errorRate": 0.005,
-            "failureCount": 38
+            "requestCount": 7820,
+            "usageShare": 0.040325,
+            "sizeMultiplier": 2.003,
+            "errorRate": 0.0069,
+            "failureCount": 54
           },
           {
             "name": "gpt-5.5-code-codex-harness",
-            "requestCount": 7133,
-            "usageShare": 0.037796,
-            "sizeMultiplier": 1.678,
-            "errorRate": 0.0028,
-            "failureCount": 20
+            "requestCount": 7055,
+            "usageShare": 0.03638,
+            "sizeMultiplier": 1.829,
+            "errorRate": 0.0074,
+            "failureCount": 52
+          },
+          {
+            "name": "gpt-5.5-high",
+            "requestCount": 6593,
+            "usageShare": 0.033998,
+            "sizeMultiplier": 1.725,
+            "errorRate": 0.0032,
+            "failureCount": 21
           },
           {
             "name": "gpt-5.5-xhigh",
-            "requestCount": 5351,
-            "usageShare": 0.028354,
-            "sizeMultiplier": 1.335,
-            "errorRate": 0.0041,
-            "failureCount": 22
+            "requestCount": 6268,
+            "usageShare": 0.032322,
+            "sizeMultiplier": 1.653,
+            "errorRate": 0.0069,
+            "failureCount": 43
           }
         ]
       },
@@ -280,35 +280,35 @@
         "fish": [
           {
             "name": "grok-4.3",
-            "requestCount": 8333,
-            "usageShare": 0.044155,
-            "sizeMultiplier": 1.92,
-            "errorRate": 0.0007,
-            "failureCount": 6
+            "requestCount": 7188,
+            "usageShare": 0.037066,
+            "sizeMultiplier": 1.859,
+            "errorRate": 0.0001,
+            "failureCount": 1
           },
           {
             "name": "grok-4.3-high",
-            "requestCount": 7894,
-            "usageShare": 0.041829,
-            "sizeMultiplier": 1.831,
-            "errorRate": 0.0011,
-            "failureCount": 9
+            "requestCount": 6918,
+            "usageShare": 0.035674,
+            "sizeMultiplier": 1.798,
+            "errorRate": 0.0004,
+            "failureCount": 3
           },
           {
             "name": "grok-build-0.1",
-            "requestCount": 7791,
-            "usageShare": 0.041283,
-            "sizeMultiplier": 1.81,
-            "errorRate": 0.0076,
-            "failureCount": 59
+            "requestCount": 5298,
+            "usageShare": 0.02732,
+            "sizeMultiplier": 1.442,
+            "errorRate": 0.0092,
+            "failureCount": 49
           },
           {
             "name": "grok-4.20-beta-0309-reasoning",
-            "requestCount": 89,
-            "usageShare": 0.000472,
-            "sizeMultiplier": 0.506,
-            "errorRate": 0.0225,
-            "failureCount": 2
+            "requestCount": 40,
+            "usageShare": 0.000206,
+            "sizeMultiplier": 0.503,
+            "errorRate": 0,
+            "failureCount": 0
           }
         ]
       },
@@ -366,19 +366,19 @@
         "fish": [
           {
             "name": "gemini-3.1-pro-preview",
-            "requestCount": 9996,
-            "usageShare": 0.052967,
-            "sizeMultiplier": 2.267,
-            "errorRate": 0.0016,
-            "failureCount": 16
+            "requestCount": 7947,
+            "usageShare": 0.04098,
+            "sizeMultiplier": 2.033,
+            "errorRate": 0.0001,
+            "failureCount": 1
           },
           {
             "name": "gemini-3-flash",
-            "requestCount": 8574,
-            "usageShare": 0.045432,
-            "sizeMultiplier": 1.97,
-            "errorRate": 0.0048,
-            "failureCount": 41
+            "requestCount": 7073,
+            "usageShare": 0.036473,
+            "sizeMultiplier": 1.833,
+            "errorRate": 0.0017,
+            "failureCount": 12
           }
         ]
       },
@@ -435,28 +435,20 @@
         },
         "fish": [
           {
-            "name": "deepseek-v4-pro-siliconflow",
-            "requestCount": 6362,
-            "usageShare": 0.033711,
-            "sizeMultiplier": 1.527,
-            "errorRate": 0.061,
-            "failureCount": 388
-          },
-          {
             "name": "deepseek-v4-flash-siliconflow",
-            "requestCount": 5456,
-            "usageShare": 0.02891,
-            "sizeMultiplier": 1.354,
-            "errorRate": 0.1602,
-            "failureCount": 874
+            "requestCount": 4489,
+            "usageShare": 0.023148,
+            "sizeMultiplier": 1.272,
+            "errorRate": 0.1564,
+            "failureCount": 702
           },
           {
-            "name": "deepseek-v4-pro-thinking-public",
-            "requestCount": 8,
-            "usageShare": 0.000042,
-            "sizeMultiplier": 0.5,
-            "errorRate": 0,
-            "failureCount": 0
+            "name": "deepseek-v4-pro-siliconflow",
+            "requestCount": 2088,
+            "usageShare": 0.010767,
+            "sizeMultiplier": 0.808,
+            "errorRate": 0.0651,
+            "failureCount": 136
           }
         ]
       },
@@ -514,11 +506,11 @@
         "fish": [
           {
             "name": "ajax-20260517",
-            "requestCount": 7314,
-            "usageShare": 0.038755,
-            "sizeMultiplier": 1.714,
-            "errorRate": 0.0037,
-            "failureCount": 27
+            "requestCount": 7466,
+            "usageShare": 0.0385,
+            "sizeMultiplier": 1.922,
+            "errorRate": 0.006,
+            "failureCount": 45
           }
         ]
       },
@@ -576,11 +568,11 @@
         "fish": [
           {
             "name": "gemma-4-31b-it",
-            "requestCount": 6868,
-            "usageShare": 0.036392,
-            "sizeMultiplier": 1.626,
-            "errorRate": 0.0128,
-            "failureCount": 88
+            "requestCount": 5881,
+            "usageShare": 0.030326,
+            "sizeMultiplier": 1.568,
+            "errorRate": 0.0094,
+            "failureCount": 55
           }
         ]
       },
@@ -637,23 +629,31 @@
         },
         "fish": [
           {
+            "name": "kimi-k2.7-code-fireworks",
+            "requestCount": 15812,
+            "usageShare": 0.081537,
+            "sizeMultiplier": 4,
+            "errorRate": 0.0614,
+            "failureCount": 971
+          },
+          {
             "name": "kimi-k2.6-fireworks",
-            "requestCount": 6685,
-            "usageShare": 0.035422,
-            "sizeMultiplier": 1.59,
-            "errorRate": 0.0193,
-            "failureCount": 129
+            "requestCount": 6094,
+            "usageShare": 0.031425,
+            "sizeMultiplier": 1.615,
+            "errorRate": 0.088,
+            "failureCount": 536
           },
           {
             "name": "kimi-k2.6-siliconflow",
-            "requestCount": 10,
-            "usageShare": 0.000053,
+            "requestCount": 2,
+            "usageShare": 0.00001,
             "sizeMultiplier": 0.5,
-            "errorRate": 0.2,
+            "errorRate": 1,
             "failureCount": 2
           },
           {
-            "name": "kimi-k2.6-20260420",
+            "name": "kimi-k2.5-20260327",
             "requestCount": 1,
             "usageShare": 0.000005,
             "sizeMultiplier": 0.5,
@@ -715,12 +715,20 @@
         },
         "fish": [
           {
+            "name": "glm-5.2",
+            "requestCount": 9428,
+            "usageShare": 0.048617,
+            "sizeMultiplier": 2.382,
+            "errorRate": 0.2721,
+            "failureCount": 2565
+          },
+          {
             "name": "glm-5.1",
-            "requestCount": 6643,
-            "usageShare": 0.0352,
-            "sizeMultiplier": 1.582,
-            "errorRate": 0.0169,
-            "failureCount": 112
+            "requestCount": 5423,
+            "usageShare": 0.027965,
+            "sizeMultiplier": 1.469,
+            "errorRate": 0.0634,
+            "failureCount": 344
           }
         ]
       },
@@ -777,12 +785,20 @@
         },
         "fish": [
           {
+            "name": "minimax-m3-fireworks",
+            "requestCount": 10007,
+            "usageShare": 0.051603,
+            "sizeMultiplier": 2.521,
+            "errorRate": 0.0556,
+            "failureCount": 556
+          },
+          {
             "name": "minimax-m2.7-fireworks",
-            "requestCount": 6373,
-            "usageShare": 0.033769,
-            "sizeMultiplier": 1.529,
-            "errorRate": 0.0239,
-            "failureCount": 152
+            "requestCount": 5385,
+            "usageShare": 0.027769,
+            "sizeMultiplier": 1.461,
+            "errorRate": 0.0258,
+            "failureCount": 139
           }
         ]
       },
@@ -840,11 +856,11 @@
         "fish": [
           {
             "name": "muse-spark-agent",
-            "requestCount": 5703,
-            "usageShare": 0.030219,
-            "sizeMultiplier": 1.401,
-            "errorRate": 0.1901,
-            "failureCount": 1084
+            "requestCount": 1337,
+            "usageShare": 0.006894,
+            "sizeMultiplier": 0.68,
+            "errorRate": 0.2042,
+            "failureCount": 273
           }
         ]
       },
@@ -902,19 +918,11 @@
         "fish": [
           {
             "name": "qwen3.6-plus-fireworks",
-            "requestCount": 5626,
-            "usageShare": 0.029811,
-            "sizeMultiplier": 1.386,
-            "errorRate": 0.0967,
-            "failureCount": 544
-          },
-          {
-            "name": "qwen3.6-plus",
-            "requestCount": 7,
-            "usageShare": 0.000037,
-            "sizeMultiplier": 0.5,
-            "errorRate": 0.1429,
-            "failureCount": 1
+            "requestCount": 4339,
+            "usageShare": 0.022375,
+            "sizeMultiplier": 1.241,
+            "errorRate": 0.0913,
+            "failureCount": 396
           }
         ]
       },
@@ -972,43 +980,19 @@
         "fish": [
           {
             "name": "mimo-v2.5-pro-fireworks-v2",
-            "requestCount": 1564,
-            "usageShare": 0.008287,
-            "sizeMultiplier": 0.691,
-            "errorRate": 0.0051,
-            "failureCount": 8
+            "requestCount": 1634,
+            "usageShare": 0.008426,
+            "sizeMultiplier": 0.73,
+            "errorRate": 0.0012,
+            "failureCount": 2
           },
           {
             "name": "mimo-v2.5-pro-fireworks",
-            "requestCount": 57,
-            "usageShare": 0.000302,
-            "sizeMultiplier": 0.504,
-            "errorRate": 0.3333,
-            "failureCount": 19
-          },
-          {
-            "name": "mimo-v2.5-pro-fireworks-old",
-            "requestCount": 38,
-            "usageShare": 0.000201,
-            "sizeMultiplier": 0.502,
-            "errorRate": 0.1053,
-            "failureCount": 4
-          },
-          {
-            "name": "mimo-v2-pro",
-            "requestCount": 10,
-            "usageShare": 0.000053,
-            "sizeMultiplier": 0.5,
-            "errorRate": 0,
-            "failureCount": 0
-          },
-          {
-            "name": "mimo-v2.5-pro",
-            "requestCount": 1,
-            "usageShare": 0.000005,
-            "sizeMultiplier": 0.5,
-            "errorRate": 0,
-            "failureCount": 0
+            "requestCount": 145,
+            "usageShare": 0.000748,
+            "sizeMultiplier": 0.512,
+            "errorRate": 0.6759,
+            "failureCount": 98
           }
         ]
       },
@@ -1065,36 +1049,52 @@
         },
         "fish": [
           {
+            "name": "glassy-lagoon-85vc",
+            "requestCount": 8303,
+            "usageShare": 0.042816,
+            "sizeMultiplier": 2.116,
+            "errorRate": 0.5459,
+            "failureCount": 4533
+          },
+          {
+            "name": "thatcher-3fmk",
+            "requestCount": 5104,
+            "usageShare": 0.02632,
+            "sizeMultiplier": 1.401,
+            "errorRate": 0.433,
+            "failureCount": 2210
+          },
+          {
+            "name": "emerald-lagoon",
+            "requestCount": 1461,
+            "usageShare": 0.007534,
+            "sizeMultiplier": 0.701,
+            "errorRate": 0.0561,
+            "failureCount": 82
+          },
+          {
             "name": "may26-chatbot4-public",
-            "requestCount": 1135,
-            "usageShare": 0.006014,
-            "sizeMultiplier": 0.63,
-            "errorRate": 0.3181,
-            "failureCount": 361
+            "requestCount": 1004,
+            "usageShare": 0.005177,
+            "sizeMultiplier": 0.628,
+            "errorRate": 0.3247,
+            "failureCount": 326
           },
           {
             "name": "quiet_sand",
-            "requestCount": 74,
-            "usageShare": 0.000392,
-            "sizeMultiplier": 0.505,
-            "errorRate": 0.2838,
-            "failureCount": 21
+            "requestCount": 60,
+            "usageShare": 0.000309,
+            "sizeMultiplier": 0.504,
+            "errorRate": 0.0333,
+            "failureCount": 2
           },
           {
             "name": "pteronura",
-            "requestCount": 16,
-            "usageShare": 0.000085,
-            "sizeMultiplier": 0.501,
-            "errorRate": 0.0625,
-            "failureCount": 1
-          },
-          {
-            "name": "deep-octo",
-            "requestCount": 8,
-            "usageShare": 0.000042,
+            "requestCount": 3,
+            "usageShare": 0.000015,
             "sizeMultiplier": 0.5,
-            "errorRate": 0.25,
-            "failureCount": 2
+            "errorRate": 0,
+            "failureCount": 0
           }
         ]
       },
@@ -1152,11 +1152,11 @@
         "fish": [
           {
             "name": "mistral-medium-3.5",
-            "requestCount": 52,
-            "usageShare": 0.000276,
-            "sizeMultiplier": 0.503,
-            "errorRate": 0.0385,
-            "failureCount": 2
+            "requestCount": 4,
+            "usageShare": 0.000021,
+            "sizeMultiplier": 0.5,
+            "errorRate": 1,
+            "failureCount": 4
           }
         ]
       }
