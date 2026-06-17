@@ -1,0 +1,1165 @@
+{
+  "usage": {
+    "metric": "agent.model.call",
+    "window": "last 24h",
+    "unit": "requests (model turns)",
+    "totalRequests": 193924,
+    "representedAs": "one fish per model; fish size scales from 0.5x to 4.0x by a top-heavy request-volume power curve",
+    "errorRate": {
+      "unit": "fraction of model turns, where 0.025 means 2.5%",
+      "min": 0,
+      "max": 1,
+      "representedAs": "vertical swim band; normalized so the lowest configured rate maps to the bottom and the highest maps to the top"
+    },
+    "totalFailures": 16325,
+    "overallErrorRate": 0.0842,
+    "volumeScale": {
+      "minSizeMultiplier": 0.5,
+      "maxSizeMultiplier": 4,
+      "curve": "top-heavy normalized request volume",
+      "exponent": 1.2
+    }
+  },
+  "fish": {
+    "types": [
+      {
+        "id": "anthropic_claude",
+        "label": "Anthropic Claude",
+        "species": "angelfish",
+        "bodyColor": "#b58cff",
+        "accentColor": "#fff0b8",
+        "size": 0.55,
+        "center": {
+          "x": [
+            -2,
+            2
+          ],
+          "y": [
+            -0.4,
+            4.4
+          ],
+          "z": [
+            -1.8,
+            2.5
+          ]
+        },
+        "radiusX": [
+          4.3,
+          11.6
+        ],
+        "radiusZ": [
+          2.6,
+          7.2
+        ],
+        "yAmp": [
+          0.28,
+          1.35
+        ],
+        "speed": [
+          0.13,
+          0.34
+        ],
+        "schoolingOffset": {
+          "x": [
+            -1.5,
+            1.5
+          ],
+          "y": [
+            -0.8,
+            0.8
+          ],
+          "z": [
+            -1,
+            1
+          ]
+        },
+        "fish": [
+          {
+            "name": "claude-opus-4-8-vertex",
+            "requestCount": 8604,
+            "usageShare": 0.044368,
+            "sizeMultiplier": 2.186,
+            "errorRate": 0.0387,
+            "failureCount": 333
+          },
+          {
+            "name": "claude-opus-4-8-thinking",
+            "requestCount": 7415,
+            "usageShare": 0.038237,
+            "sizeMultiplier": 1.911,
+            "errorRate": 0.0185,
+            "failureCount": 137
+          },
+          {
+            "name": "claude-opus-4-6-vertex",
+            "requestCount": 2802,
+            "usageShare": 0.014449,
+            "sizeMultiplier": 0.939,
+            "errorRate": 0.0275,
+            "failureCount": 77
+          },
+          {
+            "name": "claude-opus-4-7-vertex",
+            "requestCount": 2789,
+            "usageShare": 0.014382,
+            "sizeMultiplier": 0.936,
+            "errorRate": 0.029,
+            "failureCount": 81
+          },
+          {
+            "name": "claude-sonnet-4-6-vertex",
+            "requestCount": 2732,
+            "usageShare": 0.014088,
+            "sizeMultiplier": 0.926,
+            "errorRate": 0.0318,
+            "failureCount": 87
+          },
+          {
+            "name": "claude-opus-4-7-thinking",
+            "requestCount": 2416,
+            "usageShare": 0.012458,
+            "sizeMultiplier": 0.867,
+            "errorRate": 0.0219,
+            "failureCount": 53
+          },
+          {
+            "name": "claude-fable-5",
+            "requestCount": 1333,
+            "usageShare": 0.006874,
+            "sizeMultiplier": 0.68,
+            "errorRate": 1,
+            "failureCount": 1333
+          }
+        ]
+      },
+      {
+        "id": "openai_gpt",
+        "label": "OpenAI GPT",
+        "species": "tang",
+        "bodyColor": "#50e3c2",
+        "accentColor": "#0c5cff",
+        "size": 0.55,
+        "center": {
+          "x": [
+            -2,
+            2
+          ],
+          "y": [
+            -0.4,
+            4.4
+          ],
+          "z": [
+            -1.8,
+            2.5
+          ]
+        },
+        "radiusX": [
+          4.3,
+          11.6
+        ],
+        "radiusZ": [
+          2.6,
+          7.2
+        ],
+        "yAmp": [
+          0.28,
+          1.35
+        ],
+        "speed": [
+          0.13,
+          0.34
+        ],
+        "schoolingOffset": {
+          "x": [
+            -1.5,
+            1.5
+          ],
+          "y": [
+            -0.8,
+            0.8
+          ],
+          "z": [
+            -1,
+            1
+          ]
+        },
+        "fish": [
+          {
+            "name": "gpt-5.4-high-code-arena-harness",
+            "requestCount": 8163,
+            "usageShare": 0.042094,
+            "sizeMultiplier": 2.083,
+            "errorRate": 0.0013,
+            "failureCount": 11
+          },
+          {
+            "name": "gpt-5.5",
+            "requestCount": 7820,
+            "usageShare": 0.040325,
+            "sizeMultiplier": 2.003,
+            "errorRate": 0.0069,
+            "failureCount": 54
+          },
+          {
+            "name": "gpt-5.5-code-codex-harness",
+            "requestCount": 7055,
+            "usageShare": 0.03638,
+            "sizeMultiplier": 1.829,
+            "errorRate": 0.0074,
+            "failureCount": 52
+          },
+          {
+            "name": "gpt-5.5-high",
+            "requestCount": 6593,
+            "usageShare": 0.033998,
+            "sizeMultiplier": 1.725,
+            "errorRate": 0.0032,
+            "failureCount": 21
+          },
+          {
+            "name": "gpt-5.5-xhigh",
+            "requestCount": 6268,
+            "usageShare": 0.032322,
+            "sizeMultiplier": 1.653,
+            "errorRate": 0.0069,
+            "failureCount": 43
+          }
+        ]
+      },
+      {
+        "id": "xai_grok",
+        "label": "xAI Grok",
+        "species": "tang",
+        "bodyColor": "#b6f263",
+        "accentColor": "#14213d",
+        "size": 0.55,
+        "center": {
+          "x": [
+            -2,
+            2
+          ],
+          "y": [
+            -0.4,
+            4.4
+          ],
+          "z": [
+            -1.8,
+            2.5
+          ]
+        },
+        "radiusX": [
+          4.3,
+          11.6
+        ],
+        "radiusZ": [
+          2.6,
+          7.2
+        ],
+        "yAmp": [
+          0.28,
+          1.35
+        ],
+        "speed": [
+          0.13,
+          0.34
+        ],
+        "schoolingOffset": {
+          "x": [
+            -1.5,
+            1.5
+          ],
+          "y": [
+            -0.8,
+            0.8
+          ],
+          "z": [
+            -1,
+            1
+          ]
+        },
+        "fish": [
+          {
+            "name": "grok-4.3",
+            "requestCount": 7188,
+            "usageShare": 0.037066,
+            "sizeMultiplier": 1.859,
+            "errorRate": 0.0001,
+            "failureCount": 1
+          },
+          {
+            "name": "grok-4.3-high",
+            "requestCount": 6918,
+            "usageShare": 0.035674,
+            "sizeMultiplier": 1.798,
+            "errorRate": 0.0004,
+            "failureCount": 3
+          },
+          {
+            "name": "grok-build-0.1",
+            "requestCount": 5298,
+            "usageShare": 0.02732,
+            "sizeMultiplier": 1.442,
+            "errorRate": 0.0092,
+            "failureCount": 49
+          },
+          {
+            "name": "grok-4.20-beta-0309-reasoning",
+            "requestCount": 40,
+            "usageShare": 0.000206,
+            "sizeMultiplier": 0.503,
+            "errorRate": 0,
+            "failureCount": 0
+          }
+        ]
+      },
+      {
+        "id": "google_gemini",
+        "label": "Google Gemini",
+        "species": "reef",
+        "bodyColor": "#6be6ff",
+        "accentColor": "#ffd15c",
+        "size": 0.55,
+        "center": {
+          "x": [
+            -2,
+            2
+          ],
+          "y": [
+            -0.4,
+            4.4
+          ],
+          "z": [
+            -1.8,
+            2.5
+          ]
+        },
+        "radiusX": [
+          4.3,
+          11.6
+        ],
+        "radiusZ": [
+          2.6,
+          7.2
+        ],
+        "yAmp": [
+          0.28,
+          1.35
+        ],
+        "speed": [
+          0.13,
+          0.34
+        ],
+        "schoolingOffset": {
+          "x": [
+            -1.5,
+            1.5
+          ],
+          "y": [
+            -0.8,
+            0.8
+          ],
+          "z": [
+            -1,
+            1
+          ]
+        },
+        "fish": [
+          {
+            "name": "gemini-3.1-pro-preview",
+            "requestCount": 7947,
+            "usageShare": 0.04098,
+            "sizeMultiplier": 2.033,
+            "errorRate": 0.0001,
+            "failureCount": 1
+          },
+          {
+            "name": "gemini-3-flash",
+            "requestCount": 7073,
+            "usageShare": 0.036473,
+            "sizeMultiplier": 1.833,
+            "errorRate": 0.0017,
+            "failureCount": 12
+          }
+        ]
+      },
+      {
+        "id": "deepseek",
+        "label": "DeepSeek",
+        "species": "clown",
+        "bodyColor": "#5ad9ff",
+        "accentColor": "#ffffff",
+        "size": 0.55,
+        "center": {
+          "x": [
+            -2,
+            2
+          ],
+          "y": [
+            -0.4,
+            4.4
+          ],
+          "z": [
+            -1.8,
+            2.5
+          ]
+        },
+        "radiusX": [
+          4.3,
+          11.6
+        ],
+        "radiusZ": [
+          2.6,
+          7.2
+        ],
+        "yAmp": [
+          0.28,
+          1.35
+        ],
+        "speed": [
+          0.13,
+          0.34
+        ],
+        "schoolingOffset": {
+          "x": [
+            -1.5,
+            1.5
+          ],
+          "y": [
+            -0.8,
+            0.8
+          ],
+          "z": [
+            -1,
+            1
+          ]
+        },
+        "fish": [
+          {
+            "name": "deepseek-v4-flash-siliconflow",
+            "requestCount": 4489,
+            "usageShare": 0.023148,
+            "sizeMultiplier": 1.272,
+            "errorRate": 0.1564,
+            "failureCount": 702
+          },
+          {
+            "name": "deepseek-v4-pro-siliconflow",
+            "requestCount": 2088,
+            "usageShare": 0.010767,
+            "sizeMultiplier": 0.808,
+            "errorRate": 0.0651,
+            "failureCount": 136
+          }
+        ]
+      },
+      {
+        "id": "openai_ajax",
+        "label": "OpenAI Ajax",
+        "species": "reef",
+        "bodyColor": "#7ee8a8",
+        "accentColor": "#2d5dff",
+        "size": 0.55,
+        "center": {
+          "x": [
+            -2,
+            2
+          ],
+          "y": [
+            -0.4,
+            4.4
+          ],
+          "z": [
+            -1.8,
+            2.5
+          ]
+        },
+        "radiusX": [
+          4.3,
+          11.6
+        ],
+        "radiusZ": [
+          2.6,
+          7.2
+        ],
+        "yAmp": [
+          0.28,
+          1.35
+        ],
+        "speed": [
+          0.13,
+          0.34
+        ],
+        "schoolingOffset": {
+          "x": [
+            -1.5,
+            1.5
+          ],
+          "y": [
+            -0.8,
+            0.8
+          ],
+          "z": [
+            -1,
+            1
+          ]
+        },
+        "fish": [
+          {
+            "name": "ajax-20260517",
+            "requestCount": 7466,
+            "usageShare": 0.0385,
+            "sizeMultiplier": 1.922,
+            "errorRate": 0.006,
+            "failureCount": 45
+          }
+        ]
+      },
+      {
+        "id": "google_gemma",
+        "label": "Google Gemma",
+        "species": "reef",
+        "bodyColor": "#8ee0ff",
+        "accentColor": "#7b5cff",
+        "size": 0.55,
+        "center": {
+          "x": [
+            -2,
+            2
+          ],
+          "y": [
+            -0.4,
+            4.4
+          ],
+          "z": [
+            -1.8,
+            2.5
+          ]
+        },
+        "radiusX": [
+          4.3,
+          11.6
+        ],
+        "radiusZ": [
+          2.6,
+          7.2
+        ],
+        "yAmp": [
+          0.28,
+          1.35
+        ],
+        "speed": [
+          0.13,
+          0.34
+        ],
+        "schoolingOffset": {
+          "x": [
+            -1.5,
+            1.5
+          ],
+          "y": [
+            -0.8,
+            0.8
+          ],
+          "z": [
+            -1,
+            1
+          ]
+        },
+        "fish": [
+          {
+            "name": "gemma-4-31b-it",
+            "requestCount": 5881,
+            "usageShare": 0.030326,
+            "sizeMultiplier": 1.568,
+            "errorRate": 0.0094,
+            "failureCount": 55
+          }
+        ]
+      },
+      {
+        "id": "moonshot_kimi",
+        "label": "Moonshot Kimi",
+        "species": "reef",
+        "bodyColor": "#ff7cc8",
+        "accentColor": "#6321a3",
+        "size": 0.55,
+        "center": {
+          "x": [
+            -2,
+            2
+          ],
+          "y": [
+            -0.4,
+            4.4
+          ],
+          "z": [
+            -1.8,
+            2.5
+          ]
+        },
+        "radiusX": [
+          4.3,
+          11.6
+        ],
+        "radiusZ": [
+          2.6,
+          7.2
+        ],
+        "yAmp": [
+          0.28,
+          1.35
+        ],
+        "speed": [
+          0.13,
+          0.34
+        ],
+        "schoolingOffset": {
+          "x": [
+            -1.5,
+            1.5
+          ],
+          "y": [
+            -0.8,
+            0.8
+          ],
+          "z": [
+            -1,
+            1
+          ]
+        },
+        "fish": [
+          {
+            "name": "kimi-k2.7-code-fireworks",
+            "requestCount": 15812,
+            "usageShare": 0.081537,
+            "sizeMultiplier": 4,
+            "errorRate": 0.0614,
+            "failureCount": 971
+          },
+          {
+            "name": "kimi-k2.6-fireworks",
+            "requestCount": 6094,
+            "usageShare": 0.031425,
+            "sizeMultiplier": 1.615,
+            "errorRate": 0.088,
+            "failureCount": 536
+          },
+          {
+            "name": "kimi-k2.6-siliconflow",
+            "requestCount": 2,
+            "usageShare": 0.00001,
+            "sizeMultiplier": 0.5,
+            "errorRate": 1,
+            "failureCount": 2
+          },
+          {
+            "name": "kimi-k2.5-20260327",
+            "requestCount": 1,
+            "usageShare": 0.000005,
+            "sizeMultiplier": 0.5,
+            "errorRate": 0,
+            "failureCount": 0
+          }
+        ]
+      },
+      {
+        "id": "zhipu_glm",
+        "label": "Zhipu GLM",
+        "species": "reef",
+        "bodyColor": "#ffb45d",
+        "accentColor": "#224b8d",
+        "size": 0.55,
+        "center": {
+          "x": [
+            -2,
+            2
+          ],
+          "y": [
+            -0.4,
+            4.4
+          ],
+          "z": [
+            -1.8,
+            2.5
+          ]
+        },
+        "radiusX": [
+          4.3,
+          11.6
+        ],
+        "radiusZ": [
+          2.6,
+          7.2
+        ],
+        "yAmp": [
+          0.28,
+          1.35
+        ],
+        "speed": [
+          0.13,
+          0.34
+        ],
+        "schoolingOffset": {
+          "x": [
+            -1.5,
+            1.5
+          ],
+          "y": [
+            -0.8,
+            0.8
+          ],
+          "z": [
+            -1,
+            1
+          ]
+        },
+        "fish": [
+          {
+            "name": "glm-5.2",
+            "requestCount": 9428,
+            "usageShare": 0.048617,
+            "sizeMultiplier": 2.382,
+            "errorRate": 0.2721,
+            "failureCount": 2565
+          },
+          {
+            "name": "glm-5.1",
+            "requestCount": 5423,
+            "usageShare": 0.027965,
+            "sizeMultiplier": 1.469,
+            "errorRate": 0.0634,
+            "failureCount": 344
+          }
+        ]
+      },
+      {
+        "id": "minimax",
+        "label": "MiniMax",
+        "species": "angelfish",
+        "bodyColor": "#f2cf5b",
+        "accentColor": "#2a385f",
+        "size": 0.55,
+        "center": {
+          "x": [
+            -2,
+            2
+          ],
+          "y": [
+            -0.4,
+            4.4
+          ],
+          "z": [
+            -1.8,
+            2.5
+          ]
+        },
+        "radiusX": [
+          4.3,
+          11.6
+        ],
+        "radiusZ": [
+          2.6,
+          7.2
+        ],
+        "yAmp": [
+          0.28,
+          1.35
+        ],
+        "speed": [
+          0.13,
+          0.34
+        ],
+        "schoolingOffset": {
+          "x": [
+            -1.5,
+            1.5
+          ],
+          "y": [
+            -0.8,
+            0.8
+          ],
+          "z": [
+            -1,
+            1
+          ]
+        },
+        "fish": [
+          {
+            "name": "minimax-m3-fireworks",
+            "requestCount": 10007,
+            "usageShare": 0.051603,
+            "sizeMultiplier": 2.521,
+            "errorRate": 0.0556,
+            "failureCount": 556
+          },
+          {
+            "name": "minimax-m2.7-fireworks",
+            "requestCount": 5385,
+            "usageShare": 0.027769,
+            "sizeMultiplier": 1.461,
+            "errorRate": 0.0258,
+            "failureCount": 139
+          }
+        ]
+      },
+      {
+        "id": "muse",
+        "label": "Muse",
+        "species": "angelfish",
+        "bodyColor": "#d980ff",
+        "accentColor": "#62f0ff",
+        "size": 0.55,
+        "center": {
+          "x": [
+            -2,
+            2
+          ],
+          "y": [
+            -0.4,
+            4.4
+          ],
+          "z": [
+            -1.8,
+            2.5
+          ]
+        },
+        "radiusX": [
+          4.3,
+          11.6
+        ],
+        "radiusZ": [
+          2.6,
+          7.2
+        ],
+        "yAmp": [
+          0.28,
+          1.35
+        ],
+        "speed": [
+          0.13,
+          0.34
+        ],
+        "schoolingOffset": {
+          "x": [
+            -1.5,
+            1.5
+          ],
+          "y": [
+            -0.8,
+            0.8
+          ],
+          "z": [
+            -1,
+            1
+          ]
+        },
+        "fish": [
+          {
+            "name": "muse-spark-agent",
+            "requestCount": 1337,
+            "usageShare": 0.006894,
+            "sizeMultiplier": 0.68,
+            "errorRate": 0.2042,
+            "failureCount": 273
+          }
+        ]
+      },
+      {
+        "id": "qwen",
+        "label": "Qwen",
+        "species": "reef",
+        "bodyColor": "#7ce6b2",
+        "accentColor": "#243b6b",
+        "size": 0.55,
+        "center": {
+          "x": [
+            -2,
+            2
+          ],
+          "y": [
+            -0.4,
+            4.4
+          ],
+          "z": [
+            -1.8,
+            2.5
+          ]
+        },
+        "radiusX": [
+          4.3,
+          11.6
+        ],
+        "radiusZ": [
+          2.6,
+          7.2
+        ],
+        "yAmp": [
+          0.28,
+          1.35
+        ],
+        "speed": [
+          0.13,
+          0.34
+        ],
+        "schoolingOffset": {
+          "x": [
+            -1.5,
+            1.5
+          ],
+          "y": [
+            -0.8,
+            0.8
+          ],
+          "z": [
+            -1,
+            1
+          ]
+        },
+        "fish": [
+          {
+            "name": "qwen3.6-plus-fireworks",
+            "requestCount": 4339,
+            "usageShare": 0.022375,
+            "sizeMultiplier": 1.241,
+            "errorRate": 0.0913,
+            "failureCount": 396
+          }
+        ]
+      },
+      {
+        "id": "mimo",
+        "label": "Mimo",
+        "species": "clown",
+        "bodyColor": "#ff986b",
+        "accentColor": "#ffffff",
+        "size": 0.55,
+        "center": {
+          "x": [
+            -2,
+            2
+          ],
+          "y": [
+            -0.4,
+            4.4
+          ],
+          "z": [
+            -1.8,
+            2.5
+          ]
+        },
+        "radiusX": [
+          4.3,
+          11.6
+        ],
+        "radiusZ": [
+          2.6,
+          7.2
+        ],
+        "yAmp": [
+          0.28,
+          1.35
+        ],
+        "speed": [
+          0.13,
+          0.34
+        ],
+        "schoolingOffset": {
+          "x": [
+            -1.5,
+            1.5
+          ],
+          "y": [
+            -0.8,
+            0.8
+          ],
+          "z": [
+            -1,
+            1
+          ]
+        },
+        "fish": [
+          {
+            "name": "mimo-v2.5-pro-fireworks-v2",
+            "requestCount": 1634,
+            "usageShare": 0.008426,
+            "sizeMultiplier": 0.73,
+            "errorRate": 0.0012,
+            "failureCount": 2
+          },
+          {
+            "name": "mimo-v2.5-pro-fireworks",
+            "requestCount": 145,
+            "usageShare": 0.000748,
+            "sizeMultiplier": 0.512,
+            "errorRate": 0.6759,
+            "failureCount": 98
+          }
+        ]
+      },
+      {
+        "id": "other_models",
+        "label": "Other Models",
+        "species": "reef",
+        "bodyColor": "#c9f7ff",
+        "accentColor": "#72b0ff",
+        "size": 0.55,
+        "center": {
+          "x": [
+            -2,
+            2
+          ],
+          "y": [
+            -0.4,
+            4.4
+          ],
+          "z": [
+            -1.8,
+            2.5
+          ]
+        },
+        "radiusX": [
+          4.3,
+          11.6
+        ],
+        "radiusZ": [
+          2.6,
+          7.2
+        ],
+        "yAmp": [
+          0.28,
+          1.35
+        ],
+        "speed": [
+          0.13,
+          0.34
+        ],
+        "schoolingOffset": {
+          "x": [
+            -1.5,
+            1.5
+          ],
+          "y": [
+            -0.8,
+            0.8
+          ],
+          "z": [
+            -1,
+            1
+          ]
+        },
+        "fish": [
+          {
+            "name": "glassy-lagoon-85vc",
+            "requestCount": 8303,
+            "usageShare": 0.042816,
+            "sizeMultiplier": 2.116,
+            "errorRate": 0.5459,
+            "failureCount": 4533
+          },
+          {
+            "name": "thatcher-3fmk",
+            "requestCount": 5104,
+            "usageShare": 0.02632,
+            "sizeMultiplier": 1.401,
+            "errorRate": 0.433,
+            "failureCount": 2210
+          },
+          {
+            "name": "emerald-lagoon",
+            "requestCount": 1461,
+            "usageShare": 0.007534,
+            "sizeMultiplier": 0.701,
+            "errorRate": 0.0561,
+            "failureCount": 82
+          },
+          {
+            "name": "may26-chatbot4-public",
+            "requestCount": 1004,
+            "usageShare": 0.005177,
+            "sizeMultiplier": 0.628,
+            "errorRate": 0.3247,
+            "failureCount": 326
+          },
+          {
+            "name": "quiet_sand",
+            "requestCount": 60,
+            "usageShare": 0.000309,
+            "sizeMultiplier": 0.504,
+            "errorRate": 0.0333,
+            "failureCount": 2
+          },
+          {
+            "name": "pteronura",
+            "requestCount": 3,
+            "usageShare": 0.000015,
+            "sizeMultiplier": 0.5,
+            "errorRate": 0,
+            "failureCount": 0
+          }
+        ]
+      },
+      {
+        "id": "mistral",
+        "label": "Mistral",
+        "species": "tang",
+        "bodyColor": "#ffd166",
+        "accentColor": "#27344c",
+        "size": 0.55,
+        "center": {
+          "x": [
+            -2,
+            2
+          ],
+          "y": [
+            -0.4,
+            4.4
+          ],
+          "z": [
+            -1.8,
+            2.5
+          ]
+        },
+        "radiusX": [
+          4.3,
+          11.6
+        ],
+        "radiusZ": [
+          2.6,
+          7.2
+        ],
+        "yAmp": [
+          0.28,
+          1.35
+        ],
+        "speed": [
+          0.13,
+          0.34
+        ],
+        "schoolingOffset": {
+          "x": [
+            -1.5,
+            1.5
+          ],
+          "y": [
+            -0.8,
+            0.8
+          ],
+          "z": [
+            -1,
+            1
+          ]
+        },
+        "fish": [
+          {
+            "name": "mistral-medium-3.5",
+            "requestCount": 4,
+            "usageShare": 0.000021,
+            "sizeMultiplier": 0.5,
+            "errorRate": 1,
+            "failureCount": 4
+          }
+        ]
+      }
+    ]
+  }
+}

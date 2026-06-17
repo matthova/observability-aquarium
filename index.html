@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#061b27" />
+    <title>Ocean Atrium Aquarium</title>
+  </head>
+  <body>
+    <main id="app" aria-label="Ocean Atrium aquarium scene">
+      <div class="scene-shell">
+        <canvas id="aquarium"></canvas>
+        <div class="vignette" aria-hidden="true"></div>
+        <section class="fish-directory" aria-label="Fish directory">
+          <button
+            class="fish-directory-toggle"
+            id="fish-directory-toggle"
+            type="button"
+            aria-expanded="false"
+            aria-controls="fish-directory-panel"
+          >
+            <span>Fish</span>
+            <span id="fish-directory-count">0</span>
+          </button>
+          <div class="fish-directory-panel" id="fish-directory-panel" hidden>
+            <div class="fish-sort" role="group" aria-label="Sort fish">
+              <button class="fish-sort-option is-active" type="button" data-fish-sort="volume" aria-pressed="true">
+                Volume
+              </button>
+              <button class="fish-sort-option" type="button" data-fish-sort="error" aria-pressed="false">
+                Error
+              </button>
+              <button class="fish-sort-option" type="button" data-fish-sort="impact" aria-pressed="false">
+                Impact
+              </button>
+            </div>
+            <div class="fish-list" id="fish-list" role="listbox" aria-label="Fish"></div>
+          </div>
+        </section>
+        <section class="plaque" aria-label="Aquarium scene status">
+          <p class="eyebrow">Arena AI</p>
+          <h1>Observability Aquarium</h1>
+          <p class="plaque-subtext">Impact = Volume * Error</p>
+          <p class="readout">
+            <span>188,722 turns</span>
+            <span>last 24h</span>
+            <span>5,746 failures</span>
+            <span>3.04% error</span>
+            <span>41 model fish</span>
+          </p>
+        </section>
+        <section class="fish-inspector" id="fish-inspector" aria-live="polite" hidden>
+          <p class="eyebrow">Selected Fish</p>
+          <h2 id="selected-fish-name">claude-fable-5</h2>
+          <dl>
+            <div>
+              <dt>Type</dt>
+              <dd id="selected-fish-type">Anthropic Claude</dd>
+            </div>
+            <div>
+              <dt>Volume</dt>
+              <dd id="selected-fish-size">17,668 requests</dd>
+            </div>
+            <div>
+              <dt>Error</dt>
+              <dd id="selected-fish-error">0.84% · 148 failures</dd>
+            </div>
+            <div>
+              <dt>Impact</dt>
+              <dd id="selected-fish-impact">148.4 impact</dd>
+            </div>
+          </dl>
+        </section>
+      </div>
+    </main>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
