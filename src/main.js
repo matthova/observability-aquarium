@@ -1858,7 +1858,53 @@ function createBackWallDetails() {
   }
 }
 
-function makeBiggestFishGold() {
+function createPlaidTexture(size = 512) {
+  const canvas = document.createElement("canvas");
+  canvas.width = size;
+  canvas.height = size;
+  const ctx = canvas.getContext("2d");
+
+  const plaidColors = ["#ff6b35", "#ffd700", "#2e8b57", "#4169e1", "#ff69b4"];
+  const stripeWidth = Math.floor(size / 8);
+
+  ctx.fillStyle = "#1a1a2e";
+  ctx.fillRect(0, 0, size, size);
+
+  for (let c = 0; c < plaidColors.length; c++) {
+    ctx.fillStyle = plaidColors[c];
+    for (let y = 0; y < size; y += stripeWidth * 2) {
+      ctx.fillRect(0, y + c * stripeWidth, size, stripeWidth);
+    }
+    for (let x = 0; x < size; x += stripeWidth * 2) {
+      ctx.fillRect(x + c * stripeWidth, 0, stripeWidth, size);
+    }
+  }
+
+  ctx.strokeStyle = "rgba(255, 255, 255, 0.15)";
+  ctx.lineWidth = 1;
+  for (let x = 0; x < size; x += stripeWidth) {
+    ctx.beginPath();
+    ctx.moveTo(x, 0);
+    ctx.lineTo(x, size);
+    ctx.stroke();
+  }
+  for (let y = 0; y < size; y += stripeWidth) {
+    ctx.beginPath();
+    ctx.moveTo(0, y);
+    ctx.lineTo(size, y);
+    ctx.stroke();
+  }
+
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.wrapS = THREE.RepeatWrapping;
+  texture.wrapT = THREE.RepeatWrapping;
+  texture.repeat.set(2, 1.5);
+  texture.colorSpace = THREE.SRGBColorSpace;
+  texture.needsUpdate = true;
+  return texture;
+}
+
+function makeBiggestFishPlaid() {
   if (selectableFish.length === 0) return;
 
   let biggestFish = selectableFish[0];
@@ -1868,23 +1914,21 @@ function makeBiggestFishGold() {
     }
   }
 
-  biggestFish.isGoldFish = true;
+  biggestFish.isPlaidFish = true;
 
-  const goldColor = new THREE.Color(0xffcc33);
-  const goldMaterial = new THREE.MeshPhysicalMaterial({
-    color: goldColor,
-    roughness: 0.12,
-    metalness: 0.92,
+  const plaidTexture = createPlaidTexture();
+  const plaidMaterial = new THREE.MeshStandardMaterial({
+    map: plaidTexture,
+    roughness: 0.4,
+    metalness: 0.1,
     emissive: new THREE.Color(0xffa500),
-    emissiveIntensity: 0.28,
-    clearcoat: 1.0,
-    clearcoatRoughness: 0.05,
-    envMapIntensity: 1.5,
+    emissiveIntensity: 0.12,
+    emissiveMap: plaidTexture,
   });
 
   biggestFish.mesh.traverse((child) => {
     if (!child.isMesh || child.userData.isClickTarget) return;
-    child.material = goldMaterial.clone();
+    child.material = plaidMaterial.clone();
     child.material.needsUpdate = true;
   });
 }
@@ -1900,7 +1944,7 @@ function setupScene() {
   createBubbleColumns();
   createSuspendedParticles();
   createFishSchools();
-  makeBiggestFishGold();
+  makeBiggestFishPlaid();
   syncFishSortControls();
   buildFishDirectory();
 }
